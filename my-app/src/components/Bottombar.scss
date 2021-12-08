@@ -1,0 +1,16 @@
+
+  .footer{
+    display: flex;
+    background: rgba(25, 47, 45, 1) ;
+    height: 80px;
+    justify-content: space-between;
+    align-items: center;
+
+    .logo{
+      background-image: url("../assets/rs_school_js.svg");
+      background-repeat: no-repeat;
+      background-size: contain;
+      width: 235px;
+      height: 100%;
+    }
+  }

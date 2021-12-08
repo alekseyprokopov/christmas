@@ -1,13 +1,14 @@
+import './Bottombar.scss'
 const Bottombar = {
   render: async () => {
     const view = /* html */ `
-      <footer class="footer">
-          <div class="content has-text-centered">
-              <p>
-                  This is my foot. There are many like it, but this one is mine.
-              </p>
+          <div class="footer container footer-container">
+              <a href="https://github.com/alProkopov">
+                  github: AlProkopov
+              </a>
+              <p>2021</p>
+              <a class ="logo" href="https://rs.school/js/" target="_blank"></a>
           </div>
-      </footer>
       `;
     return view;
   },

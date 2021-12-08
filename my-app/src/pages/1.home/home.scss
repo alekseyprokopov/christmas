@@ -1,9 +1,9 @@
 @import '../../styles/vars.scss';
 
-.home {
-  height: 100vh;
+.home-container {
+  height: calc(100vh - 80px);
   width: 100%;
-  // background-image: url('../../assets/background.svg');
+   background-image: url('../../assets/bg.jpg');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;

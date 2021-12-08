@@ -86,8 +86,10 @@ module.exports = ({ development }) => {
           type: 'asset/resource',
         },
         {
-          test: /\.(woff(2)?|eot|ttf|otf)$/i,
-          type: 'asset/resource',
+          test: /\.(woff|woff2|eot|ttf|otf)$/i,
+          use: [{
+            loader: 'file-loader',
+          }]
         },
         {
           test: /\.css$/i,
@@ -95,7 +97,19 @@ module.exports = ({ development }) => {
         },
         {
           test: /\.s[ac]ss$/i,
-          use: [{loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' }}, 'css-loader', 'sass-loader']
+          use: [
+              {loader: MiniCssExtractPlugin.loader, options: { publicPath: '../' }},
+              'css-loader',
+              'sass-loader',
+              { loader: 'sass-resources-loader',
+                  options: {
+                      resources: [
+                          path.resolve(__dirname,'src/styles/vars.scss'),
+                          path.resolve(__dirname,'src/styles/reset.scss')
+                      ]
+                  }
+              }
+              ]
         }
       ],
     },
