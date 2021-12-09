@@ -1,10 +1,39 @@
 @import '../../styles/vars.scss';
 
 .home-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   height: calc(100vh - 80px);
   width: 100%;
-   background-image: url('../../assets/bg.jpg');
+  background-image: url('../../assets/bg.jpg');
   background-repeat: no-repeat;
   background-position: center center;
   background-size: cover;
+  .title{
+    padding: 65px 85px;
+    max-width: 590px;
+    max-height: 250px;
+    text-align: center;
+    background: radial-gradient(118.88% 606.86% at 0% 0%, rgba(36, 197, 219, 0.15) 0%, rgba(36, 197, 219, 0) 100%);
+    border-radius: 30px;
+    border: 2px solid rgba(36, 197, 219, 0.5);
+    backdrop-filter: blur(2px);
+    font: $neucha;
+    text-transform: uppercase;
+    font-size: 53px;
+    margin-bottom: 5% ;
+  }
+  .button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 320px;
+    height: 55px;
+    background: radial-gradient(118.88% 606.86% at 0% 0%, rgba(36, 197, 219, 0.15) 0%, rgba(36, 197, 219, 0) 100%);
+    backdrop-filter: blur(2px);
+    border: 2px solid rgba(36, 197, 219, 0.5);
+    border-radius: 30px;
+  }
 }

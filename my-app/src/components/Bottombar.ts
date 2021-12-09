@@ -6,7 +6,6 @@ const Bottombar = {
               <a href="https://github.com/alProkopov">
                   github: AlProkopov
               </a>
-              <p>2021</p>
               <a class ="logo" href="https://rs.school/js/" target="_blank"></a>
           </div>
       `;
