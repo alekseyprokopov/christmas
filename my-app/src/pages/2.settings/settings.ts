@@ -6,8 +6,33 @@ import {TargetElement} from 'nouislider';
 // import getLocalStorage from '../../modules/localStorageGet';
 // import setLocalStorage from '../../modules/localStorageSet';
 
+const getData = async () => {
+  let url = '../../assets/data.json';
+  let response = await fetch(url);
+  let data = await response.json();
+  return data.data;
+};
+
 const Settings = {
   render: async () => {
+    const toysArray = await getData()
+    let toysString = toysArray.map(item=>{
+      console.log(item)
+      return `
+                <div class="toy-card">
+                    <p class="toy-card-name">${item.name}</p>
+                    <div class="toy-card-image" style="background-image: url('../../assets/toys/${item.num}.png')"></div>
+                    <p>Количество: <span class = 'toy-card-number'>${item.count}</span></p>
+                    <p>Год покупки: <span class = 'toy-card-year'>${item.year}</span> год</p>
+                    <p>Форма игрушки: <span class = 'toy-card-form'>${item.shape}</span></p>
+                    <p>Цвет игрушки: <span class = 'toy-card-color'>${item.color}</span></p>
+                    <p>Размер игрушки: <span class = 'toy-card-size'>${item.size}</span></p>
+                    <p>Любимая: <span class = 'toy-card-lovely'>${item.favorite?'Да':'Нет'}</span></p>
+                </div>
+              `
+    }).join('\n');
+
+
     const view = /* html */ `
       <div class="container settings-container">
         <div class="toy-config">
@@ -123,29 +148,18 @@ const Settings = {
         </div>
         
         <div class="toy-container">
-            <p class="toy-container-title" >Игрушки</p>
+            <div class="toy-container-header"> 
+              <p class="toy-container-title" >Игрушки</p>
+              <a class="button" href="#/game">Играть</a>
+            </div>
             
             <div class="toy-card-container">
-            
-                <div class="toy-card">
-                    <p class="toy-card-name">Большой шар с рисунком Цветок</p>
-                    <div class="toy-card-image"></div>
-                    <p>Количество: <span class = 'toy-card-number'>2</span></p>
-                    <p>Год покупки: <span class = 'toy-card-year'>1960</span> год</p>
-                    <p>Форма игрушки: <span class = 'toy-card-form'>шар</span></p>
-                    <p>Цвет игрушки: <span class = 'toy-card-color'>желтый</span></p>
-                    <p>Размер игрушки: <span class = 'toy-card-size'>большой</span></p>
-                    <p>Любимая: <span class = 'toy-card-lovely'>нет</span></p>
-                </div>
-                
+                ${toysString}
             </div>
         </div>
         
       </div>
     `;
-
-
-
     return view;
   },
   after_render: async () => {
