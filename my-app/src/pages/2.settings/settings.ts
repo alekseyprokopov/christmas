@@ -5,6 +5,7 @@ import {TargetElement} from 'nouislider';
 // import eventClicker from '../../modules/eventClicker';
 // import getLocalStorage from '../../modules/localStorageGet';
 // import setLocalStorage from '../../modules/localStorageSet';
+import sort from '../../modules/sort';
 
 const getData = async () => {
   let url = '../../assets/data.json';
@@ -17,9 +18,8 @@ const Settings = {
   render: async () => {
     const toysArray = await getData()
     let toysString = toysArray.map(item=>{
-      console.log(item)
       return `
-                <div class="toy-card">
+                <div class="toy-card" data-year="${item.year}" data-name="${item.name}">
                     <p class="toy-card-name">${item.name}</p>
                     <div class="toy-card-image" style="background-image: url('../../assets/toys/${item.num}.png')"></div>
                     <p>Количество: <span class = 'toy-card-number'>${item.count}</span></p>
@@ -30,8 +30,7 @@ const Settings = {
                     <p>Любимая: <span class = 'toy-card-lovely'>${item.favorite?'Да':'Нет'}</span></p>
                 </div>
               `
-    }).join('\n');
-
+    });
 
     const view = /* html */ `
       <div class="container settings-container">
@@ -46,11 +45,11 @@ const Settings = {
             </div>
             <div class="toy-config-sort">
                 <p class="toy-config-title">Сортировать</p>
-                <select name="sort-by" id="">
-                  <option>По возрастанию</option>
-                  <option>По убыванию</option>
-                  <option>По названию от А</option>
-                  <option>По названию от Я</option>
+                <select name="sort-by" class="sort-by">
+                  <option value="yearPlus">Год (По возрастанию)</option>
+                  <option value="yearMinus">Год (По убыванию)</option>
+                  <option value="namePlus">По названию от А</option>
+                  <option value = "nameMinus">По названию от Я</option>
                 </select>               
             </div>
             <div class="toy-config-category">
@@ -154,7 +153,7 @@ const Settings = {
             </div>
             
             <div class="toy-card-container">
-                ${toysString}
+                ${toysString.join('\n')}
             </div>
         </div>
         
@@ -209,9 +208,69 @@ const Settings = {
       step: 10,
     });
 
+    let bell =document.querySelector('.bell');
+    let select = document.querySelector('.sort-by') as HTMLSelectElement
+    let parent = document.querySelector('.toy-card-container');
 
+
+    select?.addEventListener('change',()=> {
+      config.sortSelect = select?.selectedOptions[0].value
+      sort(parent,config)
+    })
+
+    bell?.addEventListener('click',()=> {
+
+      let children = parent?.children
+      Array.prototype.slice
+          .call(children)
+          .sort((a, b)=>a.dataset.year.localeCompare(b.dataset.year))
+          .forEach(item=> parent?.appendChild(item));
+    });
 
   },
 };
 
 export default Settings;
+
+// window.addEventListener('click',(e)=>{
+//   let target = e.target as HTMLInputElement
+//   if (target.classList.contains('bell-picture')){
+//     let parent = document.querySelector('.toy-card-container')
+//     console.log(parent?.children)
+//   }
+// })
+
+let config = {
+  sortSelect: 'yearPlus',
+  category:{
+    form:{
+      bell:true,
+      ball:true,
+      pine:true,
+      star:true,
+      snowflake: true,
+      figure: true
+    },
+    number:{
+      start:1,
+      end:12,
+    },
+    year:{
+      start: 1940,
+      end: 2020,
+    },
+    color:{
+      white:true,
+      yellow:true,
+      red:true,
+      blue:true,
+      green:true,
+    },
+    size:{
+      big: true,
+      middle: true,
+      small: true,
+    },
+    forward:true,
+  }
+}
