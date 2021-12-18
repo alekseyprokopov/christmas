@@ -191,78 +191,50 @@ const Settings = {
 
 
 
-    const numberSlider= <target>document.getElementById('number-slider')
-    const yearSlider= <target>document.getElementById('year-slider')
+    const sliders = document.querySelectorAll('.number-slider, .year-slider')
+    sliders.forEach((item,index)=> {
+      let min = index == 0 ? 1 : 1940;
+      let max = index == 0 ? 12 : 2020;
+      let sliderStep = index == 0 ? 1 : 10;
+      noUiSlider.create(item as target, {
+        start: [min, max],
+          tooltips:true,
+          connect: true,
+          range: {
+            'min': min,
+            'max': max
+          },
+          format: {
+            to: function ( value ) {
+
+              return Math.floor(Number(value));
+            },
+            from: function ( value ) {
+              return Math.floor(Number(value));
+
+            }
+          },
+          step: sliderStep,
+        });
+
+      (item as target).noUiSlider.on('slide', ()=>{
+        if (index==0) {
+          config.category.numberStart =(item as target).noUiSlider.get()[0]
+          config.category.numberEnd =(item as target).noUiSlider.get()[1]
+        } else {
+          config.category.yearStart =(item as target).noUiSlider.get()[0]
+          config.category.yearEnd =(item as target).noUiSlider.get()[1]
+        }
+        filter(defaultArray, config)
+      });
+    })
+
 
     let bell =document.querySelector('.bell');
     let select = document.querySelector('.sort-by') as HTMLSelectElement
     let parent = document.querySelector('.toy-card-container');
     let children = parent?.children
     let defaultArray = Array.prototype.slice.call(children)
-
-    noUiSlider.create(numberSlider as target, {
-      start: [1, 12],
-      tooltips:true,
-      connect: true,
-      range: {
-        'min': 1,
-        'max': 12
-      },
-      format: {
-        to: function ( value ) {
-
-          return Math.floor(Number(value));
-        },
-        from: function ( value ) {
-          return Math.floor(Number(value));
-
-        }
-      },
-      step: 1,
-    });
-
-    noUiSlider.create(yearSlider as target, {
-      start: [1940, 2020],
-      tooltips:true,
-      connect: true,
-      range: {
-        'min': 1940,
-        'max': 2020
-      },
-      format: {
-        to: function ( value ) {
-
-          return Math.floor(Number(value));
-        },
-        from: function ( value ) {
-          return Math.floor(Number(value));
-
-        }
-      },
-      step: 10,
-    });
-
-
-
-    // (<API>numberSlider.noUiSlider).on('update',()=>{
-    //   let min = +(numberSlider as any).noUiSlider.get()[0]
-    //   let max = +(numberSlider as any).noUiSlider.get()[1]
-    //   config.category.numberStart = min
-    //   config.category.numberEnd = max
-    //   filter(defaultArray, config)
-    // })
-
-    (<API>yearSlider.noUiSlider).on('update',()=>{
-      let min = +(yearSlider as any).noUiSlider.get()[0]
-      let max = +(yearSlider as any).noUiSlider.get()[1]
-      config.category.yearStart = min
-      config.category.yearEnd = max
-      filter(defaultArray, config)
-    })
-
-  // let a = document.querySelector('.number-slider')
-  //   a?.addEventListener('mousemove',()=>console.log('hello'))
-
 
     select.addEventListener('change',()=> {
       config.sortSelect = select?.selectedOptions[0].value
@@ -294,13 +266,6 @@ const Settings = {
 
       filter(defaultArray, config)
     }))
-
-
-
-
-
-
-
 
 
   },

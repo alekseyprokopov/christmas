@@ -7,7 +7,6 @@ export default function (array, config){
         const yearFilter = (item.dataset.year >= config.category.yearStart) && (item.dataset.year <= config.category.yearEnd)
 
         const numberFilter = (item.dataset.number >= config.category.numberStart) && (item.dataset.number <= config.category.numberEnd)
-        console.log(config.category.favorite)
         const favoriteFilter =  !config.category.favorite? (item.dataset.favorite === 'true'? true: false): true;
 
         const shapeFilter = config.category.shape[item.dataset.shape]
