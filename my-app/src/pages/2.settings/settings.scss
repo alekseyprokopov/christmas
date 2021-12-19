@@ -127,6 +127,8 @@ form {
       align-items: center;
       gap: 16px;
       cursor: pointer;
+      transition: all .5s ease-out;
+
     }
   }
   .form-item-picture{
@@ -186,6 +188,8 @@ form {
       width: 25px;
       height: 25px;
       border-radius: 5px;
+      transition: all .5s ease-out;
+
     }
   }
 }
@@ -297,4 +301,9 @@ form {
   }
 
 
+}
+
+.no-active{
+  filter: brightness(50%);
+  transition: all .5s ease-out;
 }

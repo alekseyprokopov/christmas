@@ -2,11 +2,12 @@ import './settings.scss';
 import noUiSlider from 'nouislider';
 import {API, target,TargetElement} from 'nouislider';
 // // functions
-// import eventClicker from '../../modules/eventClicker';
 // import getLocalStorage from '../../modules/localStorageGet';
 // import setLocalStorage from '../../modules/localStorageSet';
 import sort from '../../modules/sort';
 import filter from '../../modules/filter';
+import  noActive from '../../modules/noActive';
+import defaultConfig from  '../../modules/defaultConfig'
 
 const getData = async () => {
   let url = '../../assets/data.json';
@@ -84,11 +85,7 @@ const Settings = {
                 </select>               
             </div>
             <div class="toy-config-category">
-                <p class="toy-config-title">Категории</p>
-                <div>
-                  <input type="checkbox" id="category" name="category" checked>
-                  <label for="category">Все</label>
-                </div>
+                <p class="toy-config-title">Отфильтровать по категорям: </p>
             </div>
             
                 <div class="form">
@@ -168,7 +165,6 @@ const Settings = {
 
             <div class="toy-config-reset">
                 <button class="reset-button reset-filter-button">Сбросить фильтры</button>
-                <button class="reset-button reset-settings-button">Сбросить настройки</button>
             </div>
         </div>
         
@@ -192,6 +188,7 @@ const Settings = {
 
 
     const sliders = document.querySelectorAll('.number-slider, .year-slider')
+
     sliders.forEach((item,index)=> {
       let min = index == 0 ? 1 : 1940;
       let max = index == 0 ? 12 : 2020;
@@ -235,6 +232,7 @@ const Settings = {
     let parent = document.querySelector('.toy-card-container');
     let children = parent?.children
     let defaultArray = Array.prototype.slice.call(children)
+    let resetFilter = document.querySelector('.reset-filter-button')
 
     select.addEventListener('change',()=> {
       config.sortSelect = select?.selectedOptions[0].value
@@ -253,6 +251,8 @@ const Settings = {
       if( item.hasAttribute('data-color')) {
         const itemColor = (<HTMLElement>item).dataset.color as string;
         config.category.color[itemColor] = !config.category.color[itemColor]
+        item.classList.toggle('no-active')
+
       }
 
       if( item.hasAttribute('data-size')) {
@@ -263,10 +263,23 @@ const Settings = {
       if (item.classList.contains('favorite')){
         config.category.favorite = !config.category.favorite
       }
-
+      noActive(config)
       filter(defaultArray, config)
     }))
 
+    resetFilter.addEventListener('click',()=>{
+      let defaults = JSON.parse(JSON.stringify(defaultConfig))
+      // const sliders = document.querySelectorAll('.number-slider, .year-slider')
+
+      Object.assign(config.category,defaults.category)
+      filter(defaultArray, config)
+      sliders.forEach((item,index)=>{
+        if (index===0) (item as target).noUiSlider.set([config.category.numberStart ,config.category.numberEnd])
+        if (index===1) (item as target).noUiSlider.set([config.category.yearStart ,config.category.yearEnd])
+      })
+
+      noActive(config)
+    })
 
   },
 };
