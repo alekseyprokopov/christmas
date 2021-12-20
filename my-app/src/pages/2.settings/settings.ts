@@ -2,12 +2,14 @@ import './settings.scss';
 import noUiSlider from 'nouislider';
 import {API, target,TargetElement} from 'nouislider';
 // // functions
-// import getLocalStorage from '../../modules/localStorageGet';
-// import setLocalStorage from '../../modules/localStorageSet';
 import sort from '../../modules/sort';
 import filter from '../../modules/filter';
+import reset from '../../modules/reset';
+import addSliders from '../../modules/addSliders'
 import  noActive from '../../modules/noActive';
 import defaultConfig from  '../../modules/defaultConfig'
+import setLocalStorage from '../../modules/setLocal'
+import getLocalStorage from '../../modules/getLocal'
 
 const getData = async () => {
   let url = '../../assets/data.json';
@@ -44,14 +46,15 @@ let config = {
     },
     favorite:true,
   }
-}
+};
+let selected = [];
 
 const Settings = {
   render: async () => {
     const toysArray = await getData()
     let toysString = toysArray.map(item=>{
       return `
-                <div class="toy-card" data-year="${item.year}" data-name="${item.name}" data-number = "${item.count}" data-year ="${item.year}" data-shape="${item.shape}" data-color = "${item.color}" data-size = "${item.size}" data-favorite ="${item.favorite}">
+                <div class="toy-card" data-num="${item.num}" data-year="${item.year}" data-name="${item.name}" data-number = "${item.count}" data-year ="${item.year}" data-shape="${item.shape}" data-color = "${item.color}" data-size = "${item.size}" data-favorite ="${item.favorite}">
                     <p class="toy-card-name">${item.name}</p>
                     <div class="toy-card-image" style="background-image: url('../../assets/toys/${item.num}.png')"></div>
                     <p>Количество: <span class = 'toy-card-number'>${item.count}</span></p>
@@ -171,9 +174,11 @@ const Settings = {
         <div class="toy-container">
             <div class="toy-container-header"> 
               <p class="toy-container-title" >Игрушки</p>
+              <p class="toy-container-title " >Избранное: <span class="selected-counter">${selected.length}</span></p>
+              
               <a class="button" href="#/game">Играть</a>
             </div>
-            
+            <p class="selected-error" >место кончилось...</p>
             <div class="toy-card-container">
                 ${toysString.join('\n')}
             </div>
@@ -185,61 +190,24 @@ const Settings = {
   },
   after_render: async () => {
 
-
-
-    const sliders = document.querySelectorAll('.number-slider, .year-slider')
-
-    sliders.forEach((item,index)=> {
-      let min = index == 0 ? 1 : 1940;
-      let max = index == 0 ? 12 : 2020;
-      let sliderStep = index == 0 ? 1 : 10;
-      noUiSlider.create(item as target, {
-        start: [min, max],
-          tooltips:true,
-          connect: true,
-          range: {
-            'min': min,
-            'max': max
-          },
-          format: {
-            to: function ( value ) {
-
-              return Math.floor(Number(value));
-            },
-            from: function ( value ) {
-              return Math.floor(Number(value));
-
-            }
-          },
-          step: sliderStep,
-        });
-
-      (item as target).noUiSlider.on('slide', ()=>{
-        if (index==0) {
-          config.category.numberStart =(item as target).noUiSlider.get()[0]
-          config.category.numberEnd =(item as target).noUiSlider.get()[1]
-        } else {
-          config.category.yearStart =(item as target).noUiSlider.get()[0]
-          config.category.yearEnd =(item as target).noUiSlider.get()[1]
-        }
-        filter(defaultArray, config)
-      });
-    })
-
-
-    let bell =document.querySelector('.bell');
     let select = document.querySelector('.sort-by') as HTMLSelectElement
     let parent = document.querySelector('.toy-card-container');
     let children = parent?.children
     let defaultArray = Array.prototype.slice.call(children)
     let resetFilter = document.querySelector('.reset-filter-button')
+    let filterItems = document?.querySelectorAll('.form-item, .color-item, .size-item, .favorite')
+    let toyCardItems = document.querySelectorAll('.toy-card')
+    let selectedCounter = document.querySelector('.selected-counter')
+
+    addSliders(defaultArray, config)
+    noActive(config)
+    filter(defaultArray, config)
+    selectedStyles(defaultArray)
 
     select.addEventListener('change',()=> {
       config.sortSelect = select?.selectedOptions[0].value
       sort(parent,config)
     })
-
-    let filterItems = document?.querySelectorAll('.form-item, .color-item, .size-item, .favorite')
 
     filterItems.forEach(item=>item.addEventListener('click',()=>{
 
@@ -267,20 +235,26 @@ const Settings = {
       filter(defaultArray, config)
     }))
 
-    resetFilter.addEventListener('click',()=>{
-      let defaults = JSON.parse(JSON.stringify(defaultConfig))
-      // const sliders = document.querySelectorAll('.number-slider, .year-slider')
+    resetFilter.addEventListener('click',()=>reset(config, defaultArray))
+    toyCardItems.forEach(item=>{
 
-      Object.assign(config.category,defaults.category)
-      filter(defaultArray, config)
-      sliders.forEach((item,index)=>{
-        if (index===0) (item as target).noUiSlider.set([config.category.numberStart ,config.category.numberEnd])
-        if (index===1) (item as target).noUiSlider.set([config.category.yearStart ,config.category.yearEnd])
+      item.addEventListener('click', ()=> {
+        if (selected.length<20){
+          if (!selected.includes((item as HTMLElement).dataset.num)){
+            selected.push((item as HTMLElement).dataset.num)
+          } else {
+            let index = selected.indexOf((item as HTMLElement).dataset.num)
+            selected.splice(index,1)
+          }
+          selectedStyles(defaultArray)
+          selectedCounter.innerHTML = selected.length.toString()
+        } else {
+          let selectedError = document.querySelector('.selected-error')
+          selectedError.classList.add('error-active')
+          setTimeout(()=>selectedError.classList.remove('error-active'),1000)
+        }
       })
-
-      noActive(config)
     })
-
   },
 };
 
@@ -288,3 +262,23 @@ export default Settings;
 
 
 
+//localStorage
+window.addEventListener('beforeunload', () => setLocalStorage(config));
+window.addEventListener('hashchange', () => setLocalStorage(config));
+window.addEventListener('load', () => {
+  getLocalStorage(config);
+});
+
+window.addEventListener('beforeunload', () => setLocalStorage(selected));
+window.addEventListener('hashchange', () => setLocalStorage(selected));
+window.addEventListener('load', () => {
+  getLocalStorage(selected);
+});
+
+function selectedStyles(defaultArray){
+  defaultArray.forEach(item=>{
+    let numberOfItem = item.dataset.num.toString()
+    selected.includes(numberOfItem)? item.classList.add('selected'):item.classList.remove('selected')
+  })
+
+}

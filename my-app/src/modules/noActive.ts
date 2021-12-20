@@ -1,6 +1,10 @@
+import {API, target,TargetElement} from 'nouislider';
+
 export default function (config){
     let colors = config.category.color
     let shapes = config.category.shape
+    const sliders = document.querySelectorAll('.number-slider, .year-slider')
+
     let noActiveItems = document?.querySelectorAll('.form-item, .color-item, .favorite, .size-item');
     noActiveItems.forEach(item=>{
         if ((item as HTMLElement).dataset.name){
@@ -18,5 +22,9 @@ export default function (config){
         }
     })
 
+    sliders.forEach((item,index)=>{
+        if (index===0) (item as target).noUiSlider.set([config.category.numberStart ,config.category.numberEnd])
+        if (index===1) (item as target).noUiSlider.set([config.category.yearStart ,config.category.yearEnd])
+    })
 
 }
