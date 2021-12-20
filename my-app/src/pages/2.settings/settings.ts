@@ -81,7 +81,7 @@ const Settings = {
                 </form>
             </div>
             <div class="toy-config-sort">
-                <p class="toy-config-title">Сортировать</p>
+                <p class="toy-config-title toy-config-title-sort">Сортировать</p>
                 <select name="sort-by" class="sort-by">
                   <option value="yearPlus">Год (По возрастанию)</option>
                   <option value="yearMinus">Год (По убыванию)</option>
@@ -90,7 +90,7 @@ const Settings = {
                 </select>               
             </div>
             <div class="toy-config-category">
-                <p class="toy-config-title">Отфильтровать по категорям: </p>
+                <p class="toy-config-title toy-config-title-category">Отфильтровать по категорям: </p>
             </div>
             
                 <div class="form">
@@ -176,7 +176,7 @@ const Settings = {
         
         <div class="toy-container">
             <div class="toy-container-header"> 
-              <p class="toy-container-title" >Игрушки</p>
+              <p class="toy-container-title toy-container-title-toys" >Игрушки</p>
               <p class="toy-container-title " >Избранное: <span class="selected-counter">${selected.length}</span></p>
               
               <a class="button" href="#/game">Играть</a>

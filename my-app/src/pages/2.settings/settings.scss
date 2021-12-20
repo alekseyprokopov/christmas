@@ -23,12 +23,14 @@
 }
 .toy-config-header{
   display: flex;
-  gap: 50px;
+  gap: 8%;
   .volume,
   .snow{
     border: none;
     background: none;
+    background-repeat: no-repeat;
     background-size: contain;
+    min-width: 25px;
     width: 36px;
     height: 36px;
   }
@@ -204,7 +206,10 @@ form {
   }
   .size-container{
     display: flex;
-    gap: 25px;
+    gap: 5%;
+  .size-item{
+      display:flex;
+    };
   }
 }
 .favorite{
@@ -215,6 +220,7 @@ form {
 }
 .toy-config-reset{
   display: flex;
+  gap: 5%;
   justify-content: space-around;
   .reset-button{
     max-width: 180px;
@@ -253,7 +259,7 @@ form {
       justify-content: center;
       font-size: 20px;
       align-items: center;
-      width: 250px;
+      width: 25%;
       height: 36px;
       background: radial-gradient(118.88% 606.86% at 0% 0%, rgba(36, 197, 219, 0.15) 0%, rgba(36, 197, 219, 0) 100%);
       backdrop-filter: blur(2px);
@@ -282,6 +288,7 @@ form {
       flex-direction: column;
       flex: 1;
       min-width: 220px;
+      max-width: 220px;
       gap: 12px;
       background: radial-gradient(109.56% 109.56% at 0% -2.94%, rgba(255, 255, 255, 0.5) 0%, rgba(179, 246, 255, 0.5) 100%);
       backdrop-filter: blur(4px);
@@ -344,4 +351,55 @@ form {
   opacity: 1;
   transition: all 1s;
   transform: translate(-25%);
+}
+
+@media (max-width: 1360px) {
+  .toy-card-container{
+    justify-content: center;
+  }
+  .toy-container .toy-card-container .toy-card{
+    max-width: max-content;
+    flex: 1;
+  }
+}
+
+@media (max-width: 1220px){
+  .settings-container{
+    padding: 50px 20px 0 20px;
+  }
+  .toy-container-title-toys{
+    display: none;
+  }
+  .toy-container{
+    .toy-container-header{
+      justify-content: space-around;
+    }
+  }
+
+  .toy-config{
+    width: 30%;
+  }
+  .form-items{
+    flex-wrap: wrap;
+  }
+  .toy-config-title-category{
+    display: none;
+  }
+  .form-item{
+    width: 40%;
+  }
+}
+
+@media (max-width: 970px){
+  .toy-config-title-sort{
+    display: none;
+  }
+  .volume,
+  .snow{
+    display: none;
+  }
+  .toy-container .toy-card-container .toy-card{
+    max-width: 40%;
+    min-width: 40%;
+  }
 }
