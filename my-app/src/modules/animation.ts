@@ -1,6 +1,6 @@
 export default () => {
-  const content = document.getElementById('page_container');
+  const content = document.querySelector('.toy-card-container');
   content!.classList.remove('run-animation');
-  void content!.offsetWidth;
+  void (content as HTMLInputElement).offsetWidth;
   content!.classList.add('run-animation');
 };

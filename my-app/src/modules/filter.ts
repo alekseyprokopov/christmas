@@ -1,3 +1,5 @@
+import animation from './animation'
+
 export default function (array, config){
     const categories = config.category
     const parent = document.querySelector('.toy-card-container');
@@ -15,9 +17,15 @@ export default function (array, config){
 
         const sizeFilter = config.category.size[item.dataset.size]
 
-        return yearFilter && numberFilter && shapeFilter && colorFilter && sizeFilter && favoriteFilter
+        const searchFilter = item.dataset.name.toLowerCase().search(config.search)!==-1
+
+        return yearFilter && numberFilter && shapeFilter && colorFilter && sizeFilter && favoriteFilter && searchFilter
     })
-        parent!.innerHTML = '';
+    animation()
+
+    parent!.innerHTML = '';
+        if (filterArray.length===0) parent!.innerHTML =`<p style="font-size:20px; font-weight: lighter;color: white;text-align: center;width: 100%;"> &#10060; cовпадений нет...</p>`
+    animation()
         filterArray.forEach(item=> parent?.appendChild(item))
 }
 

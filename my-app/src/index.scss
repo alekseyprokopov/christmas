@@ -6,3 +6,16 @@ body{
   padding-right: $gap-gor;
   padding-left: $gap-gor;
 }
+
+.run-animation {
+  animation: my-animation 2s both;
+}
+
+@keyframes my-animation {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}

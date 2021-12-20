@@ -11,6 +11,7 @@ import defaultConfig from  '../../modules/defaultConfig'
 import setLocalStorage from '../../modules/setLocal'
 import getLocalStorage from '../../modules/getLocal'
 
+
 const getData = async () => {
   let url = '../../assets/data.json';
   let response = await fetch(url);
@@ -20,6 +21,7 @@ const getData = async () => {
 
 let config = {
   sortSelect: 'yearPlus',
+  search: '',
   category:{
     shape: {
       'колокольчик': true,
@@ -73,9 +75,9 @@ const Settings = {
             <div class="toy-config-header">
                 <button class="volume"></button>
                 <button class="snow"></button>
-                <form>
-                  <input type="text" placeholder="Искать здесь...">
-                  <button type="submit"></button>
+                <form class="search-form">
+                  <input class="search-input" type="text" placeholder="Искать здесь..." autocomplete="off">
+                  <button class="search-clear" type="submit" ></button>
                 </form>
             </div>
             <div class="toy-config-sort">
@@ -168,6 +170,7 @@ const Settings = {
 
             <div class="toy-config-reset">
                 <button class="reset-button reset-filter-button">Сбросить фильтры</button>
+                <button class="reset-button reset-settings-button">Сбросить настройки</button>
             </div>
         </div>
         
@@ -195,10 +198,15 @@ const Settings = {
     let children = parent?.children
     let defaultArray = Array.prototype.slice.call(children)
     let resetFilter = document.querySelector('.reset-filter-button')
+    let resetSettings = document.querySelector('.reset-settings-button')
     let filterItems = document?.querySelectorAll('.form-item, .color-item, .size-item, .favorite')
     let toyCardItems = document.querySelectorAll('.toy-card')
     let selectedCounter = document.querySelector('.selected-counter')
+    let search = document.querySelector('.search-input');
+    let searchClear = document.querySelector('.search-clear');
 
+    (search as HTMLInputElement).focus();
+    (search as HTMLInputElement).select();
     addSliders(defaultArray, config)
     noActive(config)
     filter(defaultArray, config)
@@ -236,6 +244,14 @@ const Settings = {
     }))
 
     resetFilter.addEventListener('click',()=>reset(config, defaultArray))
+    resetSettings.addEventListener(('click'), ()=>{
+      selected = [];
+      selectedStyles(defaultArray);
+      reset(config, defaultArray);
+      selectedCounter.innerHTML = selected.length.toString()
+
+      localStorage.clear()
+    })
     toyCardItems.forEach(item=>{
 
       item.addEventListener('click', ()=> {
@@ -254,6 +270,16 @@ const Settings = {
           setTimeout(()=>selectedError.classList.remove('error-active'),1000)
         }
       })
+    })
+
+    search.addEventListener('input',function (this: HTMLInputElement) {
+      config.search = this.value.toLowerCase()
+      filter(defaultArray, config);
+    })
+    searchClear.addEventListener('click',()=>{
+      (<HTMLInputElement>search).value = '';
+      config.search = (<HTMLInputElement>search).value
+      filter(defaultArray, config);
     })
   },
 };
@@ -280,5 +306,5 @@ function selectedStyles(defaultArray){
     let numberOfItem = item.dataset.num.toString()
     selected.includes(numberOfItem)? item.classList.add('selected'):item.classList.remove('selected')
   })
-
 }
+
