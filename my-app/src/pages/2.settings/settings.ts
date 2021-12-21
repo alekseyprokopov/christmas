@@ -89,9 +89,7 @@ const Settings = {
                   <option value = "nameMinus">По названию от Я</option>
                 </select>               
             </div>
-            <div class="toy-config-category">
-                <p class="toy-config-title toy-config-title-category">Отфильтровать по категорям: </p>
-            </div>
+            
             
                 <div class="form">
                     <p class="category-title">Форма</p>

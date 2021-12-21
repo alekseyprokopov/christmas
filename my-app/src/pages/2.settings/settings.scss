@@ -116,7 +116,7 @@ form {
   .form{
     display: flex;
     flex-direction: column;
-    gap: 25px;
+    gap: 5px;
 
     .form-items{
       display: flex;
@@ -176,13 +176,13 @@ form {
 .year{
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 10px;
 }
 
 .color{
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 5px;
   .color-container{
     display: flex;
     gap: 25px;
@@ -191,7 +191,6 @@ form {
       height: 25px;
       border-radius: 5px;
       transition: all .5s ease-out;
-
     }
   }
 }
@@ -199,7 +198,7 @@ form {
 .size{
   display: flex;
   flex-direction: column;
-  gap: 25px;
+  gap: 5px;
   input,
   label{
     cursor: pointer;
