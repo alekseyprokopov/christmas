@@ -1,4 +1,5 @@
-import './Bottombar.scss'
+import './Bottombar.scss';
+
 const Bottombar = {
   render: async () => {
     const view = /* html */ `

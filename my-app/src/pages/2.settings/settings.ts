@@ -1,24 +1,23 @@
 import './settings.scss';
-import noUiSlider from 'nouislider';
-import { API, target, TargetElement } from 'nouislider';
+
 // // functions
 import sort from '../../modules/sort';
 import filter from '../../modules/filter';
 import reset from '../../modules/reset';
 import addSliders from '../../modules/addSliders';
 import noActive from '../../modules/noActive';
-import defaultConfig from '../../modules/defaultConfig';
+import selectedStyles from '../../modules/selectedStyles';
 import setLocalStorage from '../../modules/setLocal';
 import getLocalStorage from '../../modules/getLocal';
 
 const getData = async () => {
-  let url = '../../assets/data.json';
-  let response = await fetch(url);
-  let data = await response.json();
+  const url = '../../assets/data.json';
+  const response = await fetch(url);
+  const data = await response.json();
   return data.data;
 };
 
-let config = {
+const config = {
   name: 'config',
   sortSelect: 'yearPlus',
   search: '',
@@ -54,17 +53,17 @@ let selected = [];
 const Settings = {
   render: async () => {
     const toysArray = await getData();
-    let toysString = toysArray.map((item) => {
-      return `
+    const toysString = toysArray.map(
+      (item) => `
                 <div class="toy-card" data-num="${item.num}" data-year="${item.year}" data-name="${
-        item.name
-      }" data-number = "${item.count}" data-year ="${item.year}" data-shape="${item.shape}" data-color = "${
-        item.color
-      }" data-size = "${item.size}" data-favorite ="${item.favorite}">
+  item.name
+}" data-number = "${item.count}" data-year ="${item.year}" data-shape="${item.shape}" data-color = "${
+  item.color
+}" data-size = "${item.size}" data-favorite ="${item.favorite}">
                     <p class="toy-card-name">${item.name}</p>
                     <div class="toy-card-image" style="background-image: url('../../assets/toys/${
-                      item.num
-                    }.png')"></div>
+  item.num
+}.png')"></div>
                     <p>Количество: <span class = 'toy-card-number'>${item.count}</span></p>
                     <p>Год покупки: <span class = 'toy-card-year'>${item.year}</span> год</p>
                     <p>Форма игрушки: <span class = 'toy-card-form'>${item.shape}</span></p>
@@ -72,8 +71,8 @@ const Settings = {
                     <p>Размер игрушки: <span class = 'toy-card-size'>${item.size}</span></p>
                     <p>Любимая: <span class = 'toy-card-lovely'>${item.favorite ? 'Да' : 'Нет'}</span></p>
                 </div>
-              `;
-    });
+              `,
+    );
 
     const view = /* html */ `
       <div class="container settings-container">
@@ -196,60 +195,58 @@ const Settings = {
     return view;
   },
   after_render: async () => {
-    let select = document.querySelector('.sort-by') as HTMLSelectElement;
-    let parent = document.querySelector('.toy-card-container');
-    let children = parent?.children;
-    let defaultArray = Array.prototype.slice.call(children);
-    let resetFilter = document.querySelector('.reset-filter-button');
-    let resetSettings = document.querySelector('.reset-settings-button');
-    let filterItems = document?.querySelectorAll('.form-item, .color-item, .size-item, .favorite');
-    let toyCardItems = document.querySelectorAll('.toy-card');
-    let selectedCounter = document.querySelector('.selected-counter');
-    let search = document.querySelector('.search-input');
-    let searchClear = document.querySelector('.search-clear');
+    const select = document.querySelector('.sort-by') as HTMLSelectElement;
+    const parent = document.querySelector('.toy-card-container');
+    const children = parent?.children;
+    const defaultArray = Array.prototype.slice.call(children);
+    const resetFilter = document.querySelector('.reset-filter-button');
+    const resetSettings = document.querySelector('.reset-settings-button');
+    const filterItems = document?.querySelectorAll('.form-item, .color-item, .size-item, .favorite');
+    const toyCardItems = document.querySelectorAll('.toy-card');
+    const selectedCounter = document.querySelector('.selected-counter');
+    const search = document.querySelector('.search-input');
+    const searchClear = document.querySelector('.search-clear');
 
     (search as HTMLInputElement).focus();
     (search as HTMLInputElement).select();
     addSliders(defaultArray, config);
     noActive(config);
     filter(defaultArray, config);
-    selectedStyles(defaultArray);
+    selectedStyles(defaultArray, selected);
 
     select.addEventListener('change', () => {
       config.sortSelect = select?.selectedOptions[0].value;
       sort(parent, config);
     });
 
-    filterItems.forEach((item) =>
-      item.addEventListener('click', () => {
-        if (item.hasAttribute('data-name')) {
-          const itemName = (<HTMLElement>item).dataset.name as string;
-          config.category.shape[itemName] = !config.category.shape[itemName];
-        }
+    filterItems.forEach((item) => item.addEventListener('click', () => {
+      if (item.hasAttribute('data-name')) {
+        const itemName = (<HTMLElement>item).dataset.name as string;
+        config.category.shape[itemName] = !config.category.shape[itemName];
+      }
 
-        if (item.hasAttribute('data-color')) {
-          const itemColor = (<HTMLElement>item).dataset.color as string;
-          config.category.color[itemColor] = !config.category.color[itemColor];
-          item.classList.toggle('no-active');
-        }
+      if (item.hasAttribute('data-color')) {
+        const itemColor = (<HTMLElement>item).dataset.color as string;
+        config.category.color[itemColor] = !config.category.color[itemColor];
+        item.classList.toggle('no-active');
+      }
 
-        if (item.hasAttribute('data-size')) {
-          const itemSize = (<HTMLElement>item).dataset.size as string;
-          config.category.size[itemSize] = !config.category.size[itemSize];
-        }
+      if (item.hasAttribute('data-size')) {
+        const itemSize = (<HTMLElement>item).dataset.size as string;
+        config.category.size[itemSize] = !config.category.size[itemSize];
+      }
 
-        if (item.classList.contains('favorite')) {
-          config.category.favorite = !config.category.favorite;
-        }
-        noActive(config);
-        filter(defaultArray, config);
-      }),
-    );
+      if (item.classList.contains('favorite')) {
+        config.category.favorite = !config.category.favorite;
+      }
+      noActive(config);
+      filter(defaultArray, config);
+    }));
 
     resetFilter.addEventListener('click', () => reset(config, defaultArray));
     resetSettings.addEventListener('click', () => {
       selected = [];
-      selectedStyles(defaultArray);
+      selectedStyles(defaultArray, selected);
       reset(config, defaultArray);
       selectedCounter.innerHTML = selected.length.toString();
 
@@ -261,20 +258,20 @@ const Settings = {
           if (!selected.includes((item as HTMLElement).dataset.num)) {
             selected.push((item as HTMLElement).dataset.num);
           } else {
-            let index = selected.indexOf((item as HTMLElement).dataset.num);
+            const index = selected.indexOf((item as HTMLElement).dataset.num);
             selected.splice(index, 1);
           }
-          selectedStyles(defaultArray);
+          selectedStyles(defaultArray, selected);
           selectedCounter.innerHTML = selected.length.toString();
         } else {
-          let selectedError = document.querySelector('.selected-error');
+          const selectedError = document.querySelector('.selected-error');
           selectedError.classList.add('error-active');
           setTimeout(() => selectedError.classList.remove('error-active'), 1000);
         }
       });
     });
 
-    search.addEventListener('input', function (this: HTMLInputElement) {
+    search.addEventListener('input', function cb(this: HTMLInputElement) {
       config.search = this.value.toLowerCase();
       filter(defaultArray, config);
     });
@@ -288,7 +285,7 @@ const Settings = {
 
 export default Settings;
 
-//localStorage
+// localStorage
 window.addEventListener('beforeunload', () => setLocalStorage(config));
 window.addEventListener('hashchange', () => setLocalStorage(config));
 window.addEventListener('load', () => {
@@ -300,10 +297,3 @@ window.addEventListener('hashchange', () => setLocalStorage(selected));
 window.addEventListener('load', () => {
   getLocalStorage(selected);
 });
-
-function selectedStyles(defaultArray) {
-  defaultArray.forEach((item) => {
-    let numberOfItem = item.dataset.num.toString();
-    selected.includes(numberOfItem) ? item.classList.add('selected') : item.classList.remove('selected');
-  });
-}

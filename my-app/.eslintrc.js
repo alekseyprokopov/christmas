@@ -15,5 +15,7 @@ module.exports = {
   plugins: ['@typescript-eslint'],
   rules: {
     'no-void': ['error', { allowAsStatement: true }],
+    'prefer-destructuring': ['error', { object: true, array: false }],
+    'no-param-reassign': [2, { props: false }],
   },
 };

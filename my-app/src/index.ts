@@ -9,7 +9,6 @@ import Bottombar from './components/Bottombar';
 import Navbar from './components/Navbar';
 
 import Utils from './modules/Utils';
-import animation from './modules/animation';
 
 const routes = {
   '/': Home,

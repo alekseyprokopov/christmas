@@ -1,30 +1,46 @@
-import {API, target,TargetElement} from 'nouislider';
+import { target } from 'nouislider';
 
-export default function (config){
-    let colors = config.category.color
-    let shapes = config.category.shape
-    const sliders = document.querySelectorAll('.number-slider, .year-slider')
+export default function noActive(config) {
+  const sliders = document.querySelectorAll('.number-slider, .year-slider');
 
-    let noActiveItems = document?.querySelectorAll('.form-item, .color-item, .favorite, .size-item');
-    noActiveItems.forEach(item=>{
-        if ((item as HTMLElement).dataset.name){
-            let shape = (item as HTMLElement).dataset.name as string
-            !config.category.shape[shape]? item.classList.add('no-active'): item.classList.remove('no-active')
-        }
-        if ((item as HTMLElement).classList.contains('color-item')){
-            let color = (item as HTMLElement).dataset.color as string
-            !config.category.color[color]? item.classList.add('no-active'): item.classList.remove('no-active')
-        }
-        if ((item as HTMLInputElement).classList.contains('size-item')){
-            let size = (item as HTMLElement).dataset.size as string;
-            !config.category.size[size]? item.classList.add('no-active'): item.classList.remove('no-active');
-            (item.firstElementChild as HTMLInputElement).checked = config.category.size[size];
-        }
-    })
+  const noActiveItems = document?.querySelectorAll('.form-item, .color-item, .favorite, .size-item');
+  noActiveItems.forEach((item) => {
+    const { shape, color, size } = config.category;
+    const shapeItem = (item as HTMLElement).dataset.name as string;
+    const colorItem = (item as HTMLElement).dataset.color as string;
+    const sizeItem = (item as HTMLElement).dataset.size as string;
 
-    sliders.forEach((item,index)=>{
-        if (index===0) (item as target).noUiSlider.set([config.category.numberStart ,config.category.numberEnd])
-        if (index===1) (item as target).noUiSlider.set([config.category.yearStart ,config.category.yearEnd])
-    })
+    if (shapeItem) {
+      if (!shape[shapeItem]) {
+        item.classList.add('no-active');
+      } else {
+        item.classList.remove('no-active');
+      }
+    }
 
+    if (colorItem) {
+      if (!color[colorItem]) {
+        item.classList.add('no-active');
+      } else {
+        item.classList.remove('no-active');
+      }
+    }
+
+    if (sizeItem) {
+      if (!size[sizeItem]) {
+        item.classList.add('no-active');
+      } else {
+        item.classList.remove('no-active');
+      }
+      (item.firstElementChild as HTMLInputElement).checked = config.category.size[sizeItem];
+    }
+  });
+
+  sliders.forEach((item, index) => {
+    const {
+      numberStart, numberEnd, yearStart, yearEnd,
+    } = config.category;
+    if (index === 0) (item as target).noUiSlider.set([numberStart, numberEnd]);
+    if (index === 1) (item as target).noUiSlider.set([yearStart, yearEnd]);
+  });
 }
