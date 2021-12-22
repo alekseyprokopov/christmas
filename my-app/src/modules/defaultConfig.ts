@@ -1,4 +1,5 @@
 export default  {
+    name: 'config',
     sortSelect: 'yearPlus',
     category:{
         shape: {

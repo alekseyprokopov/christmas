@@ -1,3 +1,5 @@
 export default function setLocalStorage(object) {
-    localStorage.setItem('config', JSON.stringify(object));
+  let name = object.name;
+  if (Array.isArray(object)) name = 'selected';
+    localStorage.setItem(name, JSON.stringify(object));
 }

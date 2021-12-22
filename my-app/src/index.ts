@@ -41,7 +41,7 @@ const router = async () => {
   const page = routes[parsedURL] ? routes[parsedURL] : Error404;
 
   content!.innerHTML = await page.render();
-  animation();
+  // animation();
   await page.after_render();
 };
 

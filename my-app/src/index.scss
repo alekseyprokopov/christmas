@@ -8,14 +8,20 @@ body{
 }
 
 .run-animation {
-  animation: my-animation 2s both;
+  animation: my-animation 1.5s both;
 }
 
 @keyframes my-animation {
   0% {
     opacity: 0;
+    //transform: translate(-50%);
+    //transform: scale(0.9);
   }
   100% {
     opacity: 1;
+    //transform: translate(0);
+
+    //transform: scale(1);
+
   }
 }

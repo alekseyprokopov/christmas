@@ -1,7 +1,9 @@
 export default function getLocalStorage(object) {
-    let result;
-    if (localStorage.getItem('config')) {
-        result = JSON.parse(localStorage.getItem('config'));
-    }
-    Object.assign(object, result);
+  let result;
+  let name = object.name;
+  if (Array.isArray(object)) name = 'selected';
+  if (localStorage.getItem(name)) {
+    result = JSON.parse(localStorage.getItem(name));
+  }
+  Object.assign(object, result);
 }

@@ -25,7 +25,7 @@ export default function (array, config){
 
     parent!.innerHTML = '';
         if (filterArray.length===0) parent!.innerHTML =`<p style="font-size:20px; font-weight: lighter;color: white;text-align: center;width: 100%;"> &#10060; cовпадений нет...</p>`
-    animation()
+    
         filterArray.forEach(item=> parent?.appendChild(item))
 }
 
