@@ -1,6 +1,7 @@
 import { target } from 'nouislider';
+import configType from '../types/config';
 
-export default function noActive(config) {
+export default function noActive(config: configType) {
   const sliders = document.querySelectorAll('.number-slider, .year-slider');
 
   const noActiveItems = document?.querySelectorAll('.form-item, .color-item, .favorite, .size-item');

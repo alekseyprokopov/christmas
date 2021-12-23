@@ -1,7 +1,13 @@
-export default function getLocalStorage(object) {
+import configType from '../types/config';
+
+export default function getLocalStorage(object: configType | string[]) {
   let result;
-  let { name } = object;
-  if (Array.isArray(object)) name = 'selected';
+  let name;
+  if (Array.isArray(object)) {
+    name = 'selected';
+  } else {
+    name = 'config';
+  }
   if (localStorage.getItem(name)) {
     result = JSON.parse(localStorage.getItem(name));
   }

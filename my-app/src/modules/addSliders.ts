@@ -1,8 +1,8 @@
 import noUiSlider, { target } from 'nouislider';
-
 import filter from './filter';
+import configType from '../types/config';
 
-export default function addSliders(defaultArray, config) {
+export default function addSliders(defaultArray:object[], config: configType) {
   const sliders = document.querySelectorAll('.number-slider, .year-slider');
 
   sliders.forEach((item, index) => {
@@ -30,13 +30,13 @@ export default function addSliders(defaultArray, config) {
 
     (item as target).noUiSlider.on('slide', () => {
       if (index === 0) {
-        config.category.numberStart = (item as target).noUiSlider.get()[0];
-        config.category.numberEnd = (item as target).noUiSlider.get()[1];
+        config.category.numberStart = ((<target>item).noUiSlider.get() as number[])[0];
+        config.category.numberEnd = ((<target>item).noUiSlider.get() as number[])[1];
       } else {
-        config.category.yearStart = (item as target).noUiSlider.get()[0];
-        config.category.yearEnd = (item as target).noUiSlider.get()[1];
+        config.category.yearStart = ((<target>item).noUiSlider.get() as number[])[0];
+        config.category.yearEnd = ((<target>item).noUiSlider.get() as number[])[1];
       }
-      filter(defaultArray, config);
+      filter(defaultArray as HTMLElement[], config);
     });
   });
 }

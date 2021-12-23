@@ -2,8 +2,9 @@ import { target } from 'nouislider';
 import noActive from './noActive';
 import filter from './filter';
 import defaultConfig from './defaultConfig';
+import configType from '../types/config';
 
-export default function reset(config, defaultArray) {
+export default function reset(config: configType, defaultArray: HTMLElement[]) {
   const defaults = JSON.parse(JSON.stringify(defaultConfig));
   const sliders = document.querySelectorAll('.number-slider, .year-slider');
 

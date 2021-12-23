@@ -1,4 +1,6 @@
-export default function sort(parent, config) {
+import configType from '../types/config';
+
+export default function sort(parent: HTMLElement, config : configType) {
   const children = parent?.children;
   const typeOfSort = config.sortSelect;
   const arrProt = Array.prototype.slice.call(children);

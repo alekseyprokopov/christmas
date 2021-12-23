@@ -17,7 +17,7 @@ const Utils = {
   // --------------------------------
   //  Simple sleep implementation
   // --------------------------------
-  sleep: (ms) => new Promise((resolve) => {
+  sleep: (ms: number) => new Promise((resolve) => {
     setTimeout(resolve, ms);
   }),
 };

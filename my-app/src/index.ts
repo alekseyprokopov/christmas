@@ -4,17 +4,17 @@ import Home from './pages/1.home/home';
 import Settings from './pages/2.settings/settings';
 import Game from './pages/3.game/game';
 import Error404 from './pages/Error404';
-
 import Bottombar from './components/Bottombar';
 import Navbar from './components/Navbar';
-
 import Utils from './modules/Utils';
+
+import Rout from './types/rout';
 
 const routes = {
   '/': Home,
   '/settings': Settings,
   '/game': Game,
-};
+} as Rout;
 
 const router = async () => {
   // Lazy load view element:
@@ -39,7 +39,7 @@ const router = async () => {
   // If the parsed URL is not in our list of supported routes, select the 404 page instead
   const page = routes[parsedURL] ? routes[parsedURL] : Error404;
 
-  content!.innerHTML = await page.render();
+  content.innerHTML = (await page.render()) as string;
   // animation();
   await page.after_render();
 };

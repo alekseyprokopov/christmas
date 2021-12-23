@@ -10,6 +10,8 @@ import selectedStyles from '../../modules/selectedStyles';
 import setLocalStorage from '../../modules/setLocal';
 import getLocalStorage from '../../modules/getLocal';
 
+import ConfigType from '../../types/config';
+
 const getData = async () => {
   const url = '../../assets/data.json';
   const response = await fetch(url);
@@ -17,7 +19,7 @@ const getData = async () => {
   return data.data;
 };
 
-const config = {
+const config :ConfigType = {
   name: 'config',
   sortSelect: 'yearPlus',
   search: '',
@@ -48,13 +50,24 @@ const config = {
     favorite: true,
   },
 };
-let selected = [];
+let selected: string[] = [];
+
+interface ToyItem {
+  num: number;
+  year: number;
+  count: number;
+  size: string;
+  shape: string;
+  color: string;
+  name: string;
+  favorite: boolean;
+}
 
 const Settings = {
   render: async () => {
     const toysArray = await getData();
     const toysString = toysArray.map(
-      (item) => `
+      (item: ToyItem) => `
                 <div class="toy-card" data-num="${item.num}" data-year="${item.year}" data-name="${
   item.name
 }" data-number = "${item.count}" data-year ="${item.year}" data-shape="${item.shape}" data-color = "${
@@ -216,24 +229,26 @@ const Settings = {
 
     select.addEventListener('change', () => {
       config.sortSelect = select?.selectedOptions[0].value;
-      sort(parent, config);
+      sort(parent as HTMLElement, config);
     });
 
     filterItems.forEach((item) => item.addEventListener('click', () => {
+      const { shape, color, size } = config.category;
+
       if (item.hasAttribute('data-name')) {
         const itemName = (<HTMLElement>item).dataset.name as string;
-        config.category.shape[itemName] = !config.category.shape[itemName];
+        shape[itemName] = !shape[itemName];
       }
 
       if (item.hasAttribute('data-color')) {
         const itemColor = (<HTMLElement>item).dataset.color as string;
-        config.category.color[itemColor] = !config.category.color[itemColor];
+        color[itemColor] = !color[itemColor];
         item.classList.toggle('no-active');
       }
 
       if (item.hasAttribute('data-size')) {
         const itemSize = (<HTMLElement>item).dataset.size as string;
-        config.category.size[itemSize] = !config.category.size[itemSize];
+        size[itemSize] = !size[itemSize];
       }
 
       if (item.classList.contains('favorite')) {
