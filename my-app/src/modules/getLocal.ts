@@ -1,6 +1,7 @@
 import configType from '../types/config';
+import SelectedItem from '../types/selectedItem';
 
-export default function getLocalStorage(object: configType | string[]) {
+export default function getLocalStorage(object: configType | SelectedItem[]) {
   let result;
   let name;
   if (Array.isArray(object)) {

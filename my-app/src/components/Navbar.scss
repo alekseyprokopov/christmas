@@ -1,5 +1,19 @@
-.navbar{
-  div{
-    display: flex;
+.nav {
+  display: flex;
+  background: rgba(25, 47, 45, 1);
+  height: 50px;
+  justify-content: flex-start;
+  gap: 2%;
+  align-items: center;
+  font: $neucha;
+  text-transform: uppercase;
+  .home-logo {
+    width: 48px;
+    height: 35px;
+    background-image: url(../assets/svg/tree.svg);
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+    cursor: pointer;
   }
 }

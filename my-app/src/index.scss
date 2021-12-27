@@ -1,8 +1,12 @@
-body{
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.2/css/all.min.css');
+
+body {
   font: $steppe;
   color: $font-color;
 }
-.footer-container{
+.footer-container,
+.nav-container {
   padding-right: $gap-gor;
   padding-left: $gap-gor;
 }
@@ -22,6 +26,18 @@ body{
     //transform: translate(0);
 
     //transform: scale(1);
+  }
+}
 
+.fa-snowflake {
+  color: #fff;
+  position: absolute;
+  top: -20px;
+  animation: fall linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(105vh);
   }
 }

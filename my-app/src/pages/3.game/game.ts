@@ -1,15 +1,47 @@
 import './game.scss';
 
-const gameConfig = {
+import SelectedItem from '../../types/selectedItem';
+import snowFlake from '../../modules/snowflake';
+import intervalKill from '../../modules/intervalKill';
+
+interface GameConfigType {
+  name: string;
+  background: number;
+  tree: number;
+  isGarlandActive: boolean;
+  garlandColor: string;
+  toys: SelectedItem[];
+  snow: boolean;
+  volume: boolean;
+}
+const gameConfig: GameConfigType = {
   name: 'gameConfig',
   background: 1,
   tree: 1,
   isGarlandActive: false,
   garlandColor: 'yellow',
+  toys: [],
+  snow: false,
+  volume: false,
 };
 
 const Game = {
   render: async () => {
+    if (localStorage.getItem('selected') && localStorage.getItem('selected') !== '[]') {
+      gameConfig.toys = JSON.parse(localStorage.getItem('selected'));
+    }
+
+    let toysString: string = '<p>Вы ничего не выбрали...</p>';
+    toysString = gameConfig.toys
+      .map(
+        (item) => `
+    <div class="toys-game-item" data-number="${item.number}">
+      <p class="toys-game-item-count">${item.count}</p>
+      <img class="toys-game-item-img" src="../../assets/toys/${item.number}.png" alt="toy" draggable="true">
+    </div>`,
+      )
+      .join('\n');
+
     const view = /* html */ `
     <div class="container game-container">
 
@@ -52,6 +84,8 @@ const Game = {
                       </label>
                   </div>
                 <div class="garland-items">
+                    <div class="garland-item garland-yellow" style="background: linear-gradient(
+                      124deg, #ff2400, #e81d1d, #e8b71d, #e3e81d, #1de840, #1ddde8, #2b1de8)"></div>
                     <div class="garland-item garland-yellow" style="background: rgba(253, 215, 0, 1)"></div>
                     <div class="garland-item garland-red" style="background: rgba(253, 0, 0, 1)"></div>
                     <div class="garland-item garland-blue" style = "background: rgba(34, 153, 235, 1)"></div>
@@ -71,25 +105,7 @@ const Game = {
             <div class="toys-game-container">
               <p class="option-title">Игрушки</p>
               <div class="toys-game-items">
-                  <div class="toys-game-item"></div>
-                                    <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
-                  <div class="toys-game-item"></div>
+                  ${gameConfig.toys.length > 0 ? toysString : '*Вы ничего не выбрали...'}
 
               </div>
             </div>
@@ -98,10 +114,6 @@ const Game = {
               <p class="option-title">Вы нарядили</p>
               <div class="decorated-items">
                 <div class="decorated-item"></div>
-                <div class="decorated-item"></div>
-                <div class="decorated-item"></div>
-                <div class="decorated-item"></div>
-
               </div>
             </div>
         </div>
@@ -115,6 +127,10 @@ const Game = {
     const backgroundItems = document.querySelectorAll('.background-item');
     const treeItems = document.querySelectorAll('.tree-item');
     const treeImg = document.querySelector('.main-tree') as HTMLImageElement;
+    const snowButton = document.querySelector('.snow');
+
+    const audio = document.querySelector('.audio') as HTMLAudioElement;
+    const volumeButton = document.querySelector('.volume');
 
     backgroundItems.forEach((item) => {
       item.addEventListener('click', () => {
@@ -130,6 +146,27 @@ const Game = {
         gameConfig.tree = +treeNum;
         treeImg.src = `../../assets/tree/${treeNum}.png`;
       });
+    });
+
+    snowButton.addEventListener('click', () => {
+      gameConfig.snow = !gameConfig.snow;
+
+      if (gameConfig.snow) {
+        setInterval(snowFlake, 50);
+      } else {
+        intervalKill();
+      }
+    });
+
+    volumeButton.addEventListener('click', () => {
+      gameConfig.volume = !gameConfig.volume;
+
+      if (gameConfig.volume) {
+        audio.play();
+      } else {
+        audio.pause();
+        audio.currentTime = 0;
+      }
     });
   },
 };

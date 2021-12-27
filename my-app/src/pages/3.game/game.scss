@@ -1,6 +1,6 @@
 .game-container {
   display: flex;
-  height: calc(100vh - 80px);
+  height: calc(100vh - 100px);
   width: 100%;
   position: relative;
   overflow: hidden;
@@ -213,7 +213,7 @@
 }
 
 .toys-game-container {
-  max-height: 50%;
+  height: 50%;
   overflow: auto;
   &::-webkit-scrollbar {
     width: 0;
@@ -221,13 +221,46 @@
   .toys-game-items {
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
+    align-items: flex-start;
+    align-content: flex-start;
+    gap: 5px;
+    width: 100%;
     gap: 5px;
 
     .toys-game-item {
-      width: 80px;
-      height: 80px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 35%;
+      max-width: 80px;
+      min-height: 80px;
       background-color: rgba(255, 255, 255, 0.24);
       border-radius: 10px;
+      .toys-game-item-count {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        z-index: 10;
+        width: 25px;
+        height: 25px;
+        line-height: 25px;
+        text-align: center;
+        padding: 0;
+        border-radius: 10px;
+        background-color: #24c5db;
+        font-size: 14px;
+        font-weight: 900;
+      }
+      .toys-game-item-img {
+        display: block;
+        left: 0;
+        height: 60px;
+        width: 60px;
+        object-fit: contain;
+        cursor: move;
+      }
     }
   }
 }

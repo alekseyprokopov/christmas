@@ -11,6 +11,7 @@ import setLocalStorage from '../../modules/setLocal';
 import getLocalStorage from '../../modules/getLocal';
 
 import ConfigType from '../../types/config';
+import SelectedItem from '../../types/selectedItem';
 
 const getData = async () => {
   const url = '../../assets/data.json';
@@ -19,7 +20,7 @@ const getData = async () => {
   return data.data;
 };
 
-const config :ConfigType = {
+const config: ConfigType = {
   name: 'config',
   sortSelect: 'yearPlus',
   search: '',
@@ -50,7 +51,8 @@ const config :ConfigType = {
     favorite: true,
   },
 };
-let selected: string[] = [];
+
+let selected: SelectedItem[] = [];
 
 interface ToyItem {
   num: number;
@@ -69,14 +71,14 @@ const Settings = {
     const toysString = toysArray.map(
       (item: ToyItem) => `
                 <div class="toy-card" data-num="${item.num}" data-year="${item.year}" data-name="${
-  item.name
-}" data-number = "${item.count}" data-year ="${item.year}" data-shape="${item.shape}" data-color = "${
-  item.color
-}" data-size = "${item.size}" data-favorite ="${item.favorite}">
+        item.name
+      }" data-number = "${item.count}" data-year ="${item.year}" data-shape="${item.shape}" data-color = "${
+        item.color
+      }" data-size = "${item.size}" data-favorite ="${item.favorite}">
                     <p class="toy-card-name">${item.name}</p>
                     <div class="toy-card-image" style="background-image: url('../../assets/toys/${
-  item.num
-}.png')"></div>
+                      item.num
+                    }.png')"></div>
                     <p>Количество: <span class = 'toy-card-number'>${item.count}</span></p>
                     <p>Год покупки: <span class = 'toy-card-year'>${item.year}</span> год</p>
                     <p>Форма игрушки: <span class = 'toy-card-form'>${item.shape}</span></p>
@@ -91,8 +93,7 @@ const Settings = {
       <div class="container settings-container">
         <div class="toy-config">
             <div class="toy-config-header">
-                <button class="volume"></button>
-                <button class="snow"></button>
+                <p class="toy-config-title ">Поиск: </p>
                 <form class="search-form">
                   <input class="search-input" type="text" placeholder="Искать здесь..." autocomplete="off">
                   <button class="search-clear" type="submit" ></button>
@@ -232,31 +233,33 @@ const Settings = {
       sort(parent as HTMLElement, config);
     });
 
-    filterItems.forEach((item) => item.addEventListener('click', () => {
-      const { shape, color, size } = config.category;
+    filterItems.forEach((item) =>
+      item.addEventListener('click', () => {
+        const { shape, color, size } = config.category;
 
-      if (item.hasAttribute('data-name')) {
-        const itemName = (<HTMLElement>item).dataset.name as string;
-        shape[itemName] = !shape[itemName];
-      }
+        if (item.hasAttribute('data-name')) {
+          const itemName = (<HTMLElement>item).dataset.name as string;
+          shape[itemName] = !shape[itemName];
+        }
 
-      if (item.hasAttribute('data-color')) {
-        const itemColor = (<HTMLElement>item).dataset.color as string;
-        color[itemColor] = !color[itemColor];
-        item.classList.toggle('no-active');
-      }
+        if (item.hasAttribute('data-color')) {
+          const itemColor = (<HTMLElement>item).dataset.color as string;
+          color[itemColor] = !color[itemColor];
+          item.classList.toggle('no-active');
+        }
 
-      if (item.hasAttribute('data-size')) {
-        const itemSize = (<HTMLElement>item).dataset.size as string;
-        size[itemSize] = !size[itemSize];
-      }
+        if (item.hasAttribute('data-size')) {
+          const itemSize = (<HTMLElement>item).dataset.size as string;
+          size[itemSize] = !size[itemSize];
+        }
 
-      if (item.classList.contains('favorite')) {
-        config.category.favorite = !config.category.favorite;
-      }
-      noActive(config);
-      filter(defaultArray, config);
-    }));
+        if (item.classList.contains('favorite')) {
+          config.category.favorite = !config.category.favorite;
+        }
+        noActive(config);
+        filter(defaultArray, config);
+      }),
+    );
 
     resetFilter.addEventListener('click', () => reset(config, defaultArray));
     resetSettings.addEventListener('click', () => {
@@ -270,12 +273,15 @@ const Settings = {
     toyCardItems.forEach((item) => {
       item.addEventListener('click', () => {
         if (selected.length < 20) {
-          if (!selected.includes((item as HTMLElement).dataset.num)) {
-            selected.push((item as HTMLElement).dataset.num);
+          const itemNumber = (item as HTMLElement).dataset.num;
+          const itemCount = +(item as HTMLElement).dataset.number;
+          if (!selected.some((selectItem) => selectItem.number === itemNumber)) {
+            selected.push({ number: itemNumber, count: itemCount });
           } else {
-            const index = selected.indexOf((item as HTMLElement).dataset.num);
+            const index = selected.findIndex((selectItem) => selectItem.number === itemNumber);
             selected.splice(index, 1);
           }
+
           selectedStyles(defaultArray, selected);
           selectedCounter.innerHTML = selected.length.toString();
         } else {

@@ -1,9 +1,13 @@
+import './Navbar.scss';
+
 const Navbar = {
   render: async () => {
     const view = /* html */ `
-              <div class="container">
-    
-              </div>
+    <div class="nav container nav-container">
+      <a class="home-logo"  href="#/"></a>
+      <a href="#/settings">Игрушки</a>
+      <a  href="#/game">Ёлка</a>
+    </div>
       `;
     return view;
   },
