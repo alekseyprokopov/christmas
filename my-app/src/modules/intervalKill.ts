@@ -1,5 +1,5 @@
 export default function intervalKill() {
-  let highestTimeoutId = setTimeout(';');
+  const highestTimeoutId = setTimeout(';');
   for (let i = 0; i < highestTimeoutId; i++) {
     clearInterval(i);
   }

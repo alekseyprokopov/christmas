@@ -71,14 +71,14 @@ const Settings = {
     const toysString = toysArray.map(
       (item: ToyItem) => `
                 <div class="toy-card" data-num="${item.num}" data-year="${item.year}" data-name="${
-        item.name
-      }" data-number = "${item.count}" data-year ="${item.year}" data-shape="${item.shape}" data-color = "${
-        item.color
-      }" data-size = "${item.size}" data-favorite ="${item.favorite}">
+  item.name
+}" data-number = "${item.count}" data-year ="${item.year}" data-shape="${item.shape}" data-color = "${
+  item.color
+}" data-size = "${item.size}" data-favorite ="${item.favorite}">
                     <p class="toy-card-name">${item.name}</p>
                     <div class="toy-card-image" style="background-image: url('../../assets/toys/${
-                      item.num
-                    }.png')"></div>
+  item.num
+}.png')"></div>
                     <p>Количество: <span class = 'toy-card-number'>${item.count}</span></p>
                     <p>Год покупки: <span class = 'toy-card-year'>${item.year}</span> год</p>
                     <p>Форма игрушки: <span class = 'toy-card-form'>${item.shape}</span></p>
@@ -233,33 +233,31 @@ const Settings = {
       sort(parent as HTMLElement, config);
     });
 
-    filterItems.forEach((item) =>
-      item.addEventListener('click', () => {
-        const { shape, color, size } = config.category;
+    filterItems.forEach((item) => item.addEventListener('click', () => {
+      const { shape, color, size } = config.category;
 
-        if (item.hasAttribute('data-name')) {
-          const itemName = (<HTMLElement>item).dataset.name as string;
-          shape[itemName] = !shape[itemName];
-        }
+      if (item.hasAttribute('data-name')) {
+        const itemName = (<HTMLElement>item).dataset.name as string;
+        shape[itemName] = !shape[itemName];
+      }
 
-        if (item.hasAttribute('data-color')) {
-          const itemColor = (<HTMLElement>item).dataset.color as string;
-          color[itemColor] = !color[itemColor];
-          item.classList.toggle('no-active');
-        }
+      if (item.hasAttribute('data-color')) {
+        const itemColor = (<HTMLElement>item).dataset.color as string;
+        color[itemColor] = !color[itemColor];
+        item.classList.toggle('no-active');
+      }
 
-        if (item.hasAttribute('data-size')) {
-          const itemSize = (<HTMLElement>item).dataset.size as string;
-          size[itemSize] = !size[itemSize];
-        }
+      if (item.hasAttribute('data-size')) {
+        const itemSize = (<HTMLElement>item).dataset.size as string;
+        size[itemSize] = !size[itemSize];
+      }
 
-        if (item.classList.contains('favorite')) {
-          config.category.favorite = !config.category.favorite;
-        }
-        noActive(config);
-        filter(defaultArray, config);
-      }),
-    );
+      if (item.classList.contains('favorite')) {
+        config.category.favorite = !config.category.favorite;
+      }
+      noActive(config);
+      filter(defaultArray, config);
+    }));
 
     resetFilter.addEventListener('click', () => reset(config, defaultArray));
     resetSettings.addEventListener('click', () => {
