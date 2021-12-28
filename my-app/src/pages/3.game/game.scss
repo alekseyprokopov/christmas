@@ -34,7 +34,7 @@
   background-position: center;
   background-size: cover;
   .main-tree {
-    width: 42vh;
+    min-width: 42vh;
   }
 }
 
@@ -280,4 +280,63 @@
       border-radius: 10px;
     }
   }
+}
+
+.garland-tree-container {
+  display: flex;
+  justify-content: center;
+  min-height: 750px;
+  width: 42vh;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translate(-50%);
+  pointer-events: none;
+  z-index: 90;
+  overflow: hidden;
+}
+
+.lightrope {
+  white-space: nowrap;
+  overflow: hidden;
+  position: absolute;
+  /* z-index: 1; */
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  /* border-radius: 50%; */
+  padding: 0;
+  list-style: none;
+  margin: 50px auto 0;
+}
+
+.lightrope li {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  margin: -5px;
+  animation-name: red;
+  animation-fill-mode: both;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+}
+
+.lightrope li.blue {
+  animation-name: blue;
+}
+.lightrope li:nth-child(3n + 1) {
+  animation-duration: 1.4s;
+}
+.lightrope li:nth-child(2n + 1) {
+  animation-duration: 1.8s;
+}
+
+.blue {
+  background: blue;
 }
