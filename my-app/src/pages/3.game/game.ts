@@ -5,6 +5,10 @@ import intervalKill from '../../modules/intervalKill';
 import garland from './garland';
 import dragAndDrop from './dragAndDrop';
 
+import setLocalStorage from '../../modules/setLocal';
+import getLocalStorage from '../../modules/getLocal';
+import gameConfigFunction from './gameConfigFunction';
+
 import GameConfigType from '../../types/gameConfigType';
 
 console.log(
@@ -21,6 +25,11 @@ const gameConfig: GameConfigType = {
   snow: false,
   volume: false,
 };
+window.addEventListener('beforeunload', () => setLocalStorage(gameConfig));
+window.addEventListener('hashchange', () => setLocalStorage(gameConfig));
+window.addEventListener('load', () => {
+  getLocalStorage(gameConfig);
+});
 
 const Game = {
   render: async () => {
@@ -134,27 +143,25 @@ const Game = {
     return view;
   },
   after_render: async () => {
-    const center = document.querySelector('.center') as HTMLElement;
+    gameConfigFunction(gameConfig);
+
     const backgroundItems = document.querySelectorAll('.background-item');
     const treeItems = document.querySelectorAll('.tree-item');
     const garlandItems = document.querySelectorAll('.garland-item');
-    const treeImg = document.querySelector('.main-tree') as HTMLImageElement;
     const snowButton = document.querySelector('.snow');
     const garlandSwitchButton = document.getElementById('garlandSwitch') as HTMLInputElement;
-
-    const audio = document.querySelector('.audio') as HTMLAudioElement;
     const volumeButton = document.querySelector('.volume');
 
     garlandSwitchButton.addEventListener('click', () => {
       gameConfig.isGarlandActive = garlandSwitchButton.checked;
-      garland(gameConfig);
+      gameConfigFunction(gameConfig);
     });
 
     backgroundItems.forEach((item) => {
       item.addEventListener('click', () => {
         const backgroundNum = (<HTMLElement>item).dataset.number;
         gameConfig.background = +backgroundNum;
-        center.style.backgroundImage = `url("../../assets/bg/${backgroundNum}.jpg")`;
+        gameConfigFunction(gameConfig);
       });
     });
 
@@ -162,7 +169,7 @@ const Game = {
       item.addEventListener('click', () => {
         const treeNum = (<HTMLElement>item).dataset.number;
         gameConfig.tree = +treeNum;
-        treeImg.src = `../../assets/tree/${treeNum}.png`;
+        gameConfigFunction(gameConfig);
       });
     });
 
@@ -170,28 +177,22 @@ const Game = {
       item.addEventListener('click', () => {
         const { color } = (<HTMLElement>item).dataset;
         gameConfig.garlandColor = color;
-        garland(gameConfig);
+        gameConfigFunction(gameConfig);
       });
     });
 
     snowButton.addEventListener('click', () => {
       gameConfig.snow = !gameConfig.snow;
-
-      if (gameConfig.snow) {
-        setInterval(snowFlake, 50);
-      } else {
-        intervalKill();
-      }
+      gameConfigFunction(gameConfig);
     });
 
     volumeButton.addEventListener('click', () => {
       gameConfig.volume = !gameConfig.volume;
-
+      gameConfigFunction(gameConfig);
+    });
+    document.addEventListener('click', () => {
       if (gameConfig.volume) {
-        audio.play();
-      } else {
-        audio.pause();
-        audio.currentTime = 0;
+        gameConfigFunction(gameConfig);
       }
     });
 

@@ -1,16 +1,17 @@
 import configType from '../types/config';
 import SelectedItem from '../types/selectedItem';
+import GameConfigType from '../types/gameConfigType';
 
-export default function getLocalStorage(object: configType | SelectedItem[]) {
+export default function getLocalStorage(object: configType | SelectedItem[] | GameConfigType) {
   let result;
-  let name;
+  let itemName;
   if (Array.isArray(object)) {
-    name = 'selected';
+    itemName = 'selected';
   } else {
-    name = 'config';
+    itemName = object.name;
   }
-  if (localStorage.getItem(name)) {
-    result = JSON.parse(localStorage.getItem(name));
+  if (localStorage.getItem(itemName)) {
+    result = JSON.parse(localStorage.getItem(itemName));
   }
   Object.assign(object, result);
 }

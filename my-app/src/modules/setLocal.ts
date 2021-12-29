@@ -1,12 +1,13 @@
 import configType from '../types/config';
 import SelectedItem from '../types/selectedItem';
+import GameConfigType from '../types/gameConfigType';
 
-export default function setLocalStorage(object: configType | SelectedItem[]) {
-  let name;
+export default function setLocalStorage(object: configType | SelectedItem[] | GameConfigType) {
+  let itemName;
   if (Array.isArray(object)) {
-    name = 'selected';
+    itemName = 'selected';
   } else {
-    name = 'config';
+    itemName = object.name;
   }
-  localStorage.setItem(name, JSON.stringify(object));
+  localStorage.setItem(itemName, JSON.stringify(object));
 }
