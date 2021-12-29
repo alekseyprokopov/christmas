@@ -34,6 +34,7 @@
     min-width: 25px;
     width: 36px;
     height: 36px;
+    transition: all 0.2s linear;
   }
   .volume {
     background-image: url('../../assets/svg/audio.svg');
@@ -389,10 +390,7 @@ form {
   .toy-config-title-sort {
     display: none;
   }
-  .volume,
-  .snow {
-    display: none;
-  }
+
   .toy-container .toy-card-container .toy-card {
     max-width: 40%;
     min-width: 40%;

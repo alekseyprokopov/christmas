@@ -206,6 +206,9 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
+  transition: all 0.5s linear;
+  visibility: hidden;
+  opacity: 0;
   .garland-item {
     width: 25px;
     height: 25px;
@@ -214,8 +217,19 @@
   }
 }
 
+.active {
+  transition: all 0.5s linear;
+  visibility: visible;
+  opacity: 1;
+}
+
+.no-active {
+  filter: brightness(0.6);
+  transition: all 0.2s linear;
+}
 .toys-game-container {
   height: 50%;
+  min-height: 200px;
   overflow: auto;
   &::-webkit-scrollbar {
     width: 0;
@@ -236,7 +250,7 @@
       align-items: center;
       justify-content: center;
       width: 35%;
-      max-width: 80px;
+      min-width: 55px;
       min-height: 80px;
       background-color: rgba(255, 255, 255, 0.24);
       border-radius: 10px;
@@ -244,7 +258,7 @@
         position: absolute;
         right: 0;
         bottom: 0;
-        z-index: 10;
+        z-index: 1001;
         width: 25px;
         height: 25px;
         line-height: 25px;

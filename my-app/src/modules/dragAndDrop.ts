@@ -1,6 +1,13 @@
 export default function dragAndDrop() {
   const toysItems = document.querySelectorAll('.toys-game-item-img') as NodeListOf<HTMLElement>;
-  document.ondragover = (e) => e.preventDefault();
+  const map = document.querySelector('area');
+  console.log(map);
+
+  document.ondragover = (e) => {
+    e.preventDefault();
+
+    if (e.target !== map) e.dataTransfer.dropEffect = 'move';
+  };
 
   toysItems.forEach((item: HTMLElement) => {
     function drag(event: DragEvent) {
