@@ -1,7 +1,6 @@
 export default function dragAndDrop() {
   const toysItems = document.querySelectorAll('.toys-game-item-img') as NodeListOf<HTMLElement>;
   const map = document.querySelector('area');
-  console.log(map);
 
   document.ondragover = (e) => {
     e.preventDefault();
