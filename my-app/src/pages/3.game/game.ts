@@ -1,7 +1,7 @@
 import './game.scss';
 
 import dragAndDrop from './dragAndDrop';
-
+import html2canvas from 'html2canvas';
 import setLocalStorage from '../../modules/setLocal';
 import getLocalStorage from '../../modules/getLocal';
 import gameConfigFunction from './gameConfigFunction';
@@ -25,6 +25,7 @@ const gameConfig: GameConfigType = {
   toys: [],
   snow: false,
   volume: false,
+  decorated: [],
 };
 window.addEventListener('beforeunload', () => setLocalStorage(gameConfig));
 window.addEventListener('hashchange', () => setLocalStorage(gameConfig));
@@ -130,7 +131,7 @@ const Game = {
   </div>
 
         <div class="right">
-
+            <div class="save-button">сохранить</div>
             <div class="toys-game-container">
               <p class="option-title">Игрушки</p>
               <div class="toys-game-items">
@@ -140,9 +141,10 @@ const Game = {
             </div>
 
             <div class="decorated-container">
-              <p class="option-title">Вы нарядили</p>
+              <div class="decorated-header">
+                <p class="option-title">Вы нарядили</p>
+              </div>
               <div class="decorated-items">
-                <div class="decorated-item"></div>
               </div>
             </div>
         </div>
@@ -160,6 +162,29 @@ const Game = {
     const snowButton = document.querySelector('.snow');
     const garlandSwitchButton = document.getElementById('garlandSwitch') as HTMLInputElement;
     const volumeButton = document.querySelector('.volume');
+    const center = document.querySelector('.center');
+    const saveButton = document.querySelector('.save-button');
+    const decoratedContainer = document.querySelector('.decorated-items');
+
+    saveButton.addEventListener('click', () => {
+      let data = center.innerHTML;
+
+      html2canvas(center as HTMLElement).then((canvas) => {
+        let newItem = document.createElement('div');
+        let index = decoratedContainer.childElementCount;
+        newItem.classList.add('decorated-item');
+        canvas.style.width = '100%';
+        canvas.style.height = 'auto';
+        newItem.appendChild(canvas);
+        decoratedContainer.appendChild(newItem);
+        newItem.addEventListener('click', () => {
+          center.innerHTML = gameConfig.decorated[index];
+        });
+      });
+
+      gameConfig.decorated.push(data);
+      console.log(gameConfig);
+    });
 
     garlandSwitchButton.addEventListener('click', () => {
       gameConfig.isGarlandActive = garlandSwitchButton.checked;

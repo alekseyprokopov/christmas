@@ -7,7 +7,6 @@ const Bottombar = {
               <a href="https://github.com/alProkopov">
                   github: AlProkopov
               </a>
-              <p style="color:red">ОТКРОЙТЕ ПОЖАЛУЙСТА КОНСОЛЬ</p>
               <a class ="logo" href="https://rs.school/js/" target="_blank"></a>
           </div>
       `;

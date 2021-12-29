@@ -22,8 +22,9 @@ export default function dragAndDrop() {
 
     function drop(event: DragEvent) {
       const itemId = event.dataTransfer.getData('id');
+      const parentId = itemId.split('.')[0];
       const element = document.getElementById(itemId);
-      const parent = document.getElementById(`parent${itemId.split('.')[0]}`);
+      const parent = document.getElementById(`parent${parentId}`);
 
       if ((event.target as HTMLElement).closest('map')) {
         (event.target as HTMLElement).closest('map').append(element);

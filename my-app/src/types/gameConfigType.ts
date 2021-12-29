@@ -9,4 +9,5 @@ export default interface GameConfigType {
   toys: SelectedItem[];
   snow: boolean;
   volume: boolean;
+  decorated?: string[];
 }
