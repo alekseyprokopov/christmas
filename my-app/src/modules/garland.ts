@@ -3,6 +3,7 @@ import GameConfigType from '../types/gameConfigType';
 export default function garlandActive(config: GameConfigType) {
   const garlandDiv = document.querySelector('.garland') as HTMLElement;
   const garlandColors = document.querySelector('.garland-items');
+  const garlandSwitchButton = document.getElementById('garlandSwitch') as HTMLInputElement;
 
   const string = `
   <div class="garland-tree-container">
@@ -151,8 +152,10 @@ export default function garlandActive(config: GameConfigType) {
   if (config.isGarlandActive) {
     garlandDiv!.innerHTML = string;
     garlandColors.classList.add('active');
+    garlandSwitchButton.checked = true;
   } else {
     garlandDiv!.innerHTML = '';
     garlandColors.classList.remove('active');
+    garlandSwitchButton.checked = false;
   }
 }
