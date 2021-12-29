@@ -1,7 +1,7 @@
 import './game.scss';
 
-import dragAndDrop from './dragAndDrop';
 import html2canvas from 'html2canvas';
+import dragAndDrop from './dragAndDrop';
 import setLocalStorage from '../../modules/setLocal';
 import getLocalStorage from '../../modules/getLocal';
 import gameConfigFunction from './gameConfigFunction';
@@ -38,8 +38,7 @@ const Game = {
     const data = await getData();
     const notSelected = data
       .filter((item: ToyItem, index: number) => index < 20)
-      .map((item: ToyItem, index: number) => ({ number: item.num, count: item.count }));
-    console.log(notSelected);
+      .map((item: ToyItem) => ({ number: item.num, count: item.count }));
 
     if (localStorage.getItem('selected') && localStorage.getItem('selected') !== '[]') {
       gameConfig.toys = JSON.parse(localStorage.getItem('selected'));
@@ -52,10 +51,11 @@ const Game = {
       .map((item) => {
         let images: string = '';
 
-        for (let index = 0; index < item.count; index++) {
-          images += `<img id = "${item.number}.${index + 1}"  class="toys-game-item-img" src="../../assets/toys/${
-            item.number
-          }.png" alt="toy" draggable="true">`;
+        for (let i = 0; i < item.count; i+=1) {
+          images += `<img id = "${item.number}.${i + 1}"
+            class="toys-game-item-img"
+            src="../../assets/toys/${item.number}.png"
+            alt="toy" draggable="true">`;
         }
 
         return `
@@ -167,23 +167,26 @@ const Game = {
     const decoratedContainer = document.querySelector('.decorated-items');
 
     saveButton.addEventListener('click', () => {
-      let data = center.innerHTML;
+      const dataMain = center.innerHTML;
+      const toysContainer = document.querySelector('.toys-game-items');
+      const dataToys = toysContainer.innerHTML;
+      gameConfig.decorated.push({ dataMain, dataToys });
 
       html2canvas(center as HTMLElement).then((canvas) => {
-        let newItem = document.createElement('div');
-        let index = decoratedContainer.childElementCount;
+        const newItem = document.createElement('div');
+        const index = decoratedContainer.childElementCount;
         newItem.classList.add('decorated-item');
         canvas.style.width = '100%';
         canvas.style.height = 'auto';
         newItem.appendChild(canvas);
         decoratedContainer.appendChild(newItem);
+
         newItem.addEventListener('click', () => {
-          center.innerHTML = gameConfig.decorated[index];
+          center.innerHTML = gameConfig.decorated[index].dataMain;
+          toysContainer.innerHTML = gameConfig.decorated[index].dataToys;
+          dragAndDrop();
         });
       });
-
-      gameConfig.decorated.push(data);
-      console.log(gameConfig);
     });
 
     garlandSwitchButton.addEventListener('click', () => {

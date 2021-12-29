@@ -1,5 +1,5 @@
 import SelectedItem from './selectedItem';
-
+import DecorItem from './decorItem'
 export default interface GameConfigType {
   name: string;
   background: number;
@@ -9,5 +9,5 @@ export default interface GameConfigType {
   toys: SelectedItem[];
   snow: boolean;
   volume: boolean;
-  decorated?: string[];
+  decorated?: DecorItem[];
 }
