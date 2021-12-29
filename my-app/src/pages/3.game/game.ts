@@ -3,8 +3,13 @@ import './game.scss';
 import snowFlake from '../../modules/snowflake';
 import intervalKill from '../../modules/intervalKill';
 import garland from './garland';
+import dragAndDrop from './dragAndDrop';
 
 import GameConfigType from '../../types/gameConfigType';
+
+console.log(
+  'Здравствуйте, с наступающим вас. У меня просьба. Не успел доделать, осталось совсем немного. Проверьте пожалуйста попозже. Спасибо',
+);
 
 const gameConfig: GameConfigType = {
   name: 'gameConfig',
@@ -25,13 +30,22 @@ const Game = {
 
     let toysString: string = '<p>Вы ничего не выбрали...</p>';
     toysString = gameConfig.toys
-      .map(
-        (item) => `
-    <div class="toys-game-item" data-number="${item.number}">
+      .map((item) => {
+        let images: string = '';
+
+        for (let index = 0; index < item.count; index++) {
+          images += `<img id = "${item.number}.${index + 1}"  class="toys-game-item-img" src="../../assets/toys/${
+            item.number
+          }.png" alt="toy" draggable="true">`;
+        }
+
+        return `
+    <div  class="toys-game-item" data-number="${item.number}">
       <p class="toys-game-item-count">${item.count}</p>
-      <img class="toys-game-item-img" src="../../assets/toys/${item.number}.png" alt="toy" draggable="true">
-    </div>`,
-      )
+      <div id="parent${item.number}" class="toys-img-container">${images}</div>
+
+    </div>`;
+      })
       .join('\n');
 
     const view = /* html */ `
@@ -89,7 +103,11 @@ const Game = {
 
 
   <div class="center" style ="background-image: url('../../assets/bg/1.jpg')">
-    <img src="assets/tree/1.png" class="main-tree">
+    <img src="assets/tree/1.png" class="main-tree" usemap="#tree-map">
+    <map name="tree-map">
+      <area shape="poly" coords="190 ,0, 0, 400, 100,500, 190,500, 280,500, 500, 400" >
+    </map>
+
     <div class="garland"></div>
   </div>
 
@@ -176,6 +194,8 @@ const Game = {
         audio.currentTime = 0;
       }
     });
+
+    dragAndDrop();
   },
 };
 
