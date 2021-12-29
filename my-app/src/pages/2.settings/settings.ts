@@ -12,6 +12,7 @@ import getLocalStorage from '../../modules/getLocal';
 
 import ConfigType from '../../types/config';
 import SelectedItem from '../../types/selectedItem';
+import ToyItem from '../../types/toyItem';
 
 const getData = async () => {
   const url = '../../assets/data.json';
@@ -53,17 +54,6 @@ const config: ConfigType = {
 };
 
 let selected: SelectedItem[] = [];
-
-interface ToyItem {
-  num: number;
-  year: number;
-  count: number;
-  size: string;
-  shape: string;
-  color: string;
-  name: string;
-  favorite: boolean;
-}
 
 const Settings = {
   render: async () => {

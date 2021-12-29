@@ -1,8 +1,5 @@
 import './game.scss';
 
-import snowFlake from '../../modules/snowflake';
-import intervalKill from '../../modules/intervalKill';
-import garland from './garland';
 import dragAndDrop from './dragAndDrop';
 
 import setLocalStorage from '../../modules/setLocal';
@@ -10,10 +7,14 @@ import getLocalStorage from '../../modules/getLocal';
 import gameConfigFunction from './gameConfigFunction';
 
 import GameConfigType from '../../types/gameConfigType';
+import ToyItem from '../../types/toyItem';
 
-console.log(
-  'Здравствуйте, с наступающим вас. У меня просьба. Не успел доделать, осталось совсем немного. Проверьте пожалуйста попозже. Спасибо',
-);
+const getData = async () => {
+  const url = '../../assets/data.json';
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.data;
+};
 
 const gameConfig: GameConfigType = {
   name: 'gameConfig',
@@ -33,8 +34,16 @@ window.addEventListener('load', () => {
 
 const Game = {
   render: async () => {
+    const data = await getData();
+    const notSelected = data
+      .filter((item: ToyItem, index: number) => index < 20)
+      .map((item: ToyItem, index: number) => ({ number: item.num, count: item.count }));
+    console.log(notSelected);
+
     if (localStorage.getItem('selected') && localStorage.getItem('selected') !== '[]') {
       gameConfig.toys = JSON.parse(localStorage.getItem('selected'));
+    } else {
+      gameConfig.toys = notSelected;
     }
 
     let toysString: string = '<p>Вы ничего не выбрали...</p>';
