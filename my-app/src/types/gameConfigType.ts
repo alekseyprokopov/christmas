@@ -11,4 +11,5 @@ export default interface GameConfigType {
   snow: boolean;
   volume: boolean;
   decorated?: DecorItem[];
+  presets: string;
 }

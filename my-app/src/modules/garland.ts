@@ -1,4 +1,4 @@
-import GameConfigType from '../../types/gameConfigType';
+import GameConfigType from '../types/gameConfigType';
 
 export default function garlandActive(config: GameConfigType) {
   const garlandDiv = document.querySelector('.garland') as HTMLElement;

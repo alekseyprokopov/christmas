@@ -1,7 +1,7 @@
 import garland from './garland';
-import GameConfigType from '../../types/gameConfigType';
-import intervalKill from '../../modules/intervalKill';
-import snowFlake from '../../modules/snowflake';
+import GameConfigType from '../types/gameConfigType';
+import intervalKill from './intervalKill';
+import snowFlake from './snowflake';
 
 export default function gameConfigFunction(gameConfig: GameConfigType) {
   // background

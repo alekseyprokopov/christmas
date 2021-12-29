@@ -1,8 +1,8 @@
 import html2canvas from 'html2canvas';
-import dragAndDrop from '../pages/3.game/dragAndDrop';
+import dragAndDrop from './dragAndDrop';
 import GameConfigType from '../types/gameConfigType';
 
-export default function saveTree(gameConfig:GameConfigType) {
+export default function saveTree(gameConfig: GameConfigType) {
   const center = document.querySelector('.center');
   const decoratedContainer = document.querySelector('.decorated-items');
 
@@ -14,6 +14,7 @@ export default function saveTree(gameConfig:GameConfigType) {
   html2canvas(center as HTMLElement).then((canvas) => {
     const newItem = document.createElement('div');
     const index = decoratedContainer.childElementCount;
+
     newItem.classList.add('decorated-item');
     canvas.style.width = '100%';
     canvas.style.height = 'auto';

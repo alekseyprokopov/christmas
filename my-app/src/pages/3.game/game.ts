@@ -1,10 +1,10 @@
 import './game.scss';
 
-import html2canvas from 'html2canvas';
-import dragAndDrop from './dragAndDrop';
+import dragAndDrop from '../../modules/dragAndDrop';
 import setLocalStorage from '../../modules/setLocal';
 import getLocalStorage from '../../modules/getLocal';
-import gameConfigFunction from './gameConfigFunction';
+import gameConfigFunction from '../../modules/gameConfigFunction';
+import saveTree from '../../modules/saveTree';
 
 import GameConfigType from '../../types/gameConfigType';
 import ToyItem from '../../types/toyItem';
@@ -26,11 +26,13 @@ const gameConfig: GameConfigType = {
   snow: false,
   volume: false,
   decorated: [],
+  presets: '',
 };
 window.addEventListener('beforeunload', () => setLocalStorage(gameConfig));
 window.addEventListener('hashchange', () => setLocalStorage(gameConfig));
 window.addEventListener('load', () => {
   getLocalStorage(gameConfig);
+  gameConfig.decorated = [];
 });
 
 const Game = {
@@ -154,40 +156,18 @@ const Game = {
     return view;
   },
   after_render: async () => {
-    gameConfigFunction(gameConfig);
-
     const backgroundItems = document.querySelectorAll('.background-item');
     const treeItems = document.querySelectorAll('.tree-item');
     const garlandItems = document.querySelectorAll('.garland-item');
     const snowButton = document.querySelector('.snow');
     const garlandSwitchButton = document.getElementById('garlandSwitch') as HTMLInputElement;
     const volumeButton = document.querySelector('.volume');
-    const center = document.querySelector('.center');
     const saveButton = document.querySelector('.save-button');
-    const decoratedContainer = document.querySelector('.decorated-items');
 
-    saveButton.addEventListener('click', () => {
-      const dataMain = center.innerHTML;
-      const toysContainer = document.querySelector('.toys-game-items');
-      const dataToys = toysContainer.innerHTML;
-      gameConfig.decorated.push({ dataMain, dataToys });
+    gameConfigFunction(gameConfig);
+    dragAndDrop();
 
-      html2canvas(center as HTMLElement).then((canvas) => {
-        const newItem = document.createElement('div');
-        const index = decoratedContainer.childElementCount;
-        newItem.classList.add('decorated-item');
-        canvas.style.width = '100%';
-        canvas.style.height = 'auto';
-        newItem.appendChild(canvas);
-        decoratedContainer.appendChild(newItem);
-
-        newItem.addEventListener('click', () => {
-          center.innerHTML = gameConfig.decorated[index].dataMain;
-          toysContainer.innerHTML = gameConfig.decorated[index].dataToys;
-          dragAndDrop();
-        });
-      });
-    });
+    saveButton.addEventListener('click', () => saveTree(gameConfig));
 
     garlandSwitchButton.addEventListener('click', () => {
       gameConfig.isGarlandActive = garlandSwitchButton.checked;
@@ -227,13 +207,12 @@ const Game = {
       gameConfig.volume = !gameConfig.volume;
       gameConfigFunction(gameConfig);
     });
+
     document.addEventListener('click', () => {
       if (gameConfig.volume) {
         gameConfigFunction(gameConfig);
       }
     });
-
-    dragAndDrop();
   },
 };
 

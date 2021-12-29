@@ -1,18 +1,9 @@
-interface Coords {
-  downX?: number;
-  downY?: number;
-}
-
 export default function dragAndDrop() {
   const toysItems = document.querySelectorAll('.toys-game-item-img') as NodeListOf<HTMLElement>;
   document.ondragover = (e) => e.preventDefault();
 
   toysItems.forEach((item: HTMLElement) => {
-    const startCoords = {} as Coords;
-
     function drag(event: DragEvent) {
-      if (!startCoords.downX) startCoords.downX = event.pageX;
-      if (!startCoords.downY) startCoords.downY = event.pageY;
       event.dataTransfer.setData('id', (event.target as HTMLElement).id);
       (event.target as HTMLElement).hidden = true;
     }
