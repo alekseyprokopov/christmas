@@ -51,7 +51,7 @@ const Game = {
       .map((item) => {
         let images: string = '';
 
-        for (let i = 0; i < item.count; i+=1) {
+        for (let i = 0; i < item.count; i += 1) {
           images += `<img id = "${item.number}.${i + 1}"
             class="toys-game-item-img"
             src="../../assets/toys/${item.number}.png"

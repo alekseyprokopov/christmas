@@ -10,15 +10,12 @@ export default function dragAndDrop() {
   toysItems.forEach((item: HTMLElement) => {
     const startCoords = {} as Coords;
 
-    item.ondragstart = drag;
     function drag(event: DragEvent) {
       if (!startCoords.downX) startCoords.downX = event.pageX;
       if (!startCoords.downY) startCoords.downY = event.pageY;
       event.dataTransfer.setData('id', (event.target as HTMLElement).id);
       (event.target as HTMLElement).hidden = true;
     }
-
-    document.ondrop = drop;
 
     function drop(event: DragEvent) {
       const itemId = event.dataTransfer.getData('id');
@@ -41,5 +38,8 @@ export default function dragAndDrop() {
       }
       parent.previousElementSibling.innerHTML = `${parent.childElementCount}`;
     }
+
+    item.ondragstart = drag;
+    document.ondrop = drop;
   });
 }
