@@ -2,7 +2,7 @@ import './Navbar.scss';
 
 const Navbar = {
   render: async () => {
-    const view = /* html */ `
+    const view = `
     <div class="nav container nav-container">
       <a class="home-logo"  href="#/"></a>
       <a href="#/settings">Игрушки</a>

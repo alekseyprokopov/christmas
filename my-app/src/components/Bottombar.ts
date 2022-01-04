@@ -2,7 +2,7 @@ import './Bottombar.scss';
 
 const Bottombar = {
   render: async () => {
-    const view = /* html */ `
+    const view = `
           <div class="footer container footer-container">
               <a href="https://github.com/alProkopov">
                   github: AlProkopov

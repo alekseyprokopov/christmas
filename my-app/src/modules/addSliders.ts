@@ -2,7 +2,7 @@ import noUiSlider, { target } from 'nouislider';
 import filter from './filter';
 import configType from '../types/config';
 
-export default function addSliders(defaultArray:object[], config: configType) {
+export default function addSliders(defaultArray: object[], config: configType) {
   const sliders = document.querySelectorAll('.number-slider, .year-slider');
 
   sliders.forEach((item, index) => {

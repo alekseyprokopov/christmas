@@ -1,11 +1,9 @@
-// import "./style.scss";
+import {
+  Home, Settings, Game, Error404,
+} from './pages';
 
-import Home from './pages/1.home/home';
-import Settings from './pages/2.settings/settings';
-import Game from './pages/3.game/game';
-import Error404 from './pages/Error404';
-import Bottombar from './components/Bottombar';
-import Navbar from './components/Navbar';
+import { Bottombar, Navbar } from './components';
+
 import Utils from './modules/Utils';
 
 import Rout from './types/rout';
@@ -31,16 +29,14 @@ const router = async () => {
   const request = Utils.parseRequestURL();
 
   // Parse the URL and if it has an id part, change it with the string ":id"
-  const parsedURL = (request.resource ? `/${request.resource}` : '/')
-    + (request.id ? '/:id' : '')
-    + (request.verb ? `/${request.verb}` : '');
+  const { resource, id, verb } = request;
+  const parsedURL = `/${resource || ''}${id ? '/:id' : ''}${verb ? `/${verb}` : ''}`;
 
   // Get the page from our hash of supported routes.
   // If the parsed URL is not in our list of supported routes, select the 404 page instead
   const page = routes[parsedURL] ? routes[parsedURL] : Error404;
 
   content.innerHTML = (await page.render()) as string;
-  // animation();
   await page.after_render();
 };
 

@@ -2,7 +2,7 @@ import './home.scss';
 
 const Home = {
   render: async () => {
-    const view = /* html */ `
+    const view = `
       <div class="container home-container">
         <p class="title">Помогите бабушке нарядить ёлку</p>
         <a class="button" href="#/settings">Начать</a>
