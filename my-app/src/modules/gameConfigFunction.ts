@@ -1,7 +1,7 @@
 import garland from './garland';
-import GameConfigType from '../types/gameConfigType';
 import intervalKill from './intervalKill';
 import snowFlake from './snowflake';
+import GameConfigType from '../types/gameConfigType';
 
 export default function gameConfigFunction(gameConfig: GameConfigType) {
   const {
