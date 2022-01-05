@@ -4,19 +4,23 @@ import intervalKill from './intervalKill';
 import snowFlake from './snowflake';
 
 export default function gameConfigFunction(gameConfig: GameConfigType) {
+  const {
+    background, tree, snow, volume,
+  } = gameConfig;
+
   // background
   const center = document.querySelector('.center') as HTMLElement;
-  center.style.backgroundImage = `url("../../assets/bg/${gameConfig.background}.jpg")`;
+  center.style.backgroundImage = `url("../../assets/bg/${background}.jpg")`;
 
   // tree
   const treeImg = document.querySelector('.main-tree') as HTMLImageElement;
-  treeImg.src = `../../assets/tree/${gameConfig.tree}.png`;
+  treeImg.src = `../../assets/tree/${tree}.png`;
 
   garland(gameConfig);
 
   // snow
   const snowButton = document.querySelector('.snow');
-  if (gameConfig.snow) {
+  if (snow) {
     setInterval(snowFlake, 50);
     snowButton.classList.remove('no-active');
   } else {
@@ -27,7 +31,7 @@ export default function gameConfigFunction(gameConfig: GameConfigType) {
   // volume
   const audio = document.querySelector('.audio') as HTMLAudioElement;
   const volumeButton = document.querySelector('.volume');
-  if (gameConfig.volume) {
+  if (volume) {
     audio.play();
     volumeButton.classList.remove('no-active');
   } else {

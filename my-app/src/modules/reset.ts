@@ -11,10 +11,9 @@ export default function reset(config: configType, defaultArray: HTMLElement[]) {
   Object.assign(config.category, defaults.category);
   filter(defaultArray, config);
   sliders.forEach((item, index) => {
-    const { numberStart } = config.category;
-    const { numberEnd } = config.category;
-    const { yearStart } = config.category;
-    const { yearEnd } = config.category;
+    const {
+      numberStart, numberEnd, yearStart, yearEnd,
+    } = config.category;
     if (index === 0) (item as target).noUiSlider.set([numberStart, numberEnd]);
     if (index === 1) (item as target).noUiSlider.set([yearStart, yearEnd]);
   });
